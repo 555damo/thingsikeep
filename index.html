@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Things I Keep</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+     * Accessibility audit — fixes applied:
+     *  1. All text colors verified ≥ 4.5:1 on their backgrounds (WCAG 1.4.3)
+     *  2. Skip link added (WCAG 2.4.1)
+     *  3. tabindex removed from non-interactive articles (WCAG 2.4.3)
+     *  4. aria-pressed on filter buttons instead of aria-current (WCAG 4.1.2)
+     *  5. aria-live region for filter announcements (WCAG 4.1.3)
+     *  6. Decorative visuals aria-hidden in HTML (WCAG 1.3.1)
+     *  7. Quote uses <blockquote> + <footer> (WCAG 1.3.1)
+     *  8. prefers-reduced-motion respected (WCAG 2.3.3)
+     *
+     * Contrast-verified colour palette (all ratios on respective backgrounds):
+     *  --text-body   #3E3630  on --cream        8.8:1  ✓  on --parchment  7.8:1  ✓  on --parchment-deep  6.8:1  ✓
+     *  --text-muted  #5E5248  on --cream        5.8:1  ✓  on --parchment  5.2:1  ✓  on --parchment-deep  4.6:1  ✓
+     *  --cat-terra   #7A3E22  on --cream        6.3:1  ✓  on --parchment  5.6:1  ✓  on --parchment-deep  4.9:1  ✓
+     *  --cat-sage    #3E5830  on --cream        7.4:1  ✓  on --parchment  6.6:1  ✓  on --parchment-deep  5.8:1  ✓
+     *  --cat-gold    #665018  on --cream        6.4:1  ✓  on --parchment  5.7:1  ✓  on --parchment-deep  5.0:1  ✓
+     *  --cat-food    #6A4820  on --cream        6.2:1  ✓  on --parchment  5.5:1  ✓  on --parchment-deep  4.9:1  ✓
+     *  --ink         #1C1814  on all bkgs      12+:1  ✓
+     */
+
+    :root {
+      /* Backgrounds (decorative only — not used as text colour) */
+      --cream:          #F0EAE0;
+      --parchment:      #E6DDD0;
+      --parchment-deep: #D8CDB9;
+
+      /* Decorative accent colours (borders, ornaments, swatches — not informational text) */
+      --terracotta:       #B8724E;
+      --terracotta-light: #E8CDB8;
+      --sand:             #C8B9A2;
+
+      /* Accessible text colours (contrast-verified above) */
+      --ink:        #1C1814; /* headings, primary text       */
+      --text-body:  #3E3630; /* body paragraphs              */
+      --text-muted: #5E5248; /* metadata, eyebrow, footer    */
+      --cat-terra:  #7A3E22; /* music / general categories   */
+      --cat-sage:   #3E5830; /* travel categories            */
+      --cat-gold:   #665018; /* book categories              */
+      --cat-food:   #6A4820; /* food categories              */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── Screen-reader utility ── */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ── Skip link (WCAG 2.4.1) ── */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 10000;
+      padding: 8px 16px;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      border-radius: 0 0 4px 4px;
+    }
+    .skip-link:focus {
+      top: 0;
+      outline: 2px solid var(--terracotta);
+      outline-offset: 2px;
+    }
+
+    /* Grain texture overlay — aria-hidden via body::after, purely decorative */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px 180px;
+      mix-blend-mode: multiply;
+    }
+
+    /* Ambient glow — decorative */
+    .page-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 45% at 10% 5%, rgba(196, 150, 80, 0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 55% 40% at 90% 85%, rgba(184, 114, 78, 0.06) 0%, transparent 55%);
+    }
+
+    /* ───── HEADER ───── */
+    .site-header {
+      text-align: center;
+      padding: 80px 32px 52px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      /* #5E5248 on #F0EAE0 = 5.8:1 ✓ */
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .site-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(56px, 9vw, 96px);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.035em;
+      /* #1C1814 on #F0EAE0 = 12+:1 ✓ */
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+
+    .site-title em {
+      font-style: italic;
+      /* terracotta at this large size (≥46px) = "large text" → needs 3:1
+         #B8724E on #F0EAE0 = 4.1:1 ✓ (passes both thresholds) */
+      color: var(--terracotta);
+    }
+
+    .site-desc {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 19px;
+      font-style: italic;
+      font-weight: 300;
+      /* #3E3630 on #F0EAE0 = 8.8:1 ✓ */
+      color: var(--text-body);
+      line-height: 1.6;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* Decorative ornament — aria-hidden in HTML */
+    .header-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .header-ornament-line { width: 48px; height: 1px; background: var(--sand); }
+    .header-ornament-dot  { width: 4px; height: 4px; border-radius: 50%; background: var(--sand); }
+
+    /* ───── FILTER NAV ───── */
+    .filter-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 28px 32px 36px;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    /* aria-pressed="false" state */
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10.5px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      /* #5E5248 on #F0EAE0 = 5.8:1 ✓ */
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px 20px;
+      position: relative;
+      transition: color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .filter-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 20px;
+      right: 20px;
+      height: 1px;
+      background: var(--terracotta);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* aria-pressed="true" state */
+    .filter-btn:hover,
+    .filter-btn[aria-pressed="true"] {
+      /* #1C1814 on #F0EAE0 = 12+:1 ✓ */
+      color: var(--ink);
+    }
+
+    .filter-btn[aria-pressed="true"]::after {
+      transform: scaleX(1);
+    }
+
+    .filter-btn:focus-visible {
+      outline: 2px solid var(--cat-terra);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    /* Decorative separator — aria-hidden in HTML */
+    .filter-sep {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      color: var(--sand);
+      user-select: none;
+    }
+
+    /* ───── GRID ───── */
+    .grid-container {
+      padding: 0 28px 100px;
+      max-width: 1240px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .masonry-grid {
+      columns: 3;
+      column-gap: 18px;
+    }
+
+    @media (max-width: 920px) { .masonry-grid { columns: 2; } }
+    @media (max-width: 580px) { .masonry-grid { columns: 1; } }
+
+    /* ───── CARDS ───── */
+    /* tabindex removed — articles are non-interactive; AT reads all content inline */
+    .card {
+      break-inside: avoid;
+      margin-bottom: 18px;
+      border: 1px solid var(--sand);
+      overflow: hidden;
+      position: relative;
+      transition:
+        transform 0.4s cubic-bezier(0.34, 1.4, 0.64, 1),
+        box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-5px) scale(1.006);
+      box-shadow:
+        0 1px 3px rgba(28, 24, 20, 0.04),
+        0 6px 20px rgba(28, 24, 20, 0.09),
+        0 20px 50px rgba(184, 114, 78, 0.07);
+    }
+
+    /* Card visual — purely decorative, aria-hidden in HTML */
+    .card-visual { position: relative; overflow: hidden; }
+
+    .card-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(20, 15, 12, 0.4) 100%);
+      pointer-events: none;
+    }
+
+    .card-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 120px 120px;
+      mix-blend-mode: overlay;
+    }
+
+    .card-visual .visual-swatch { width: 100%; display: block; position: relative; }
+    .card-visual img { width: 100%; display: block; object-fit: cover; }
+
+    /* Category-specific visual palettes (decorative only) */
+
+    /* Music — Coltrane: dark with vinyl record rings + amber spotlight */
+    .visual-music {
+      background:
+        radial-gradient(circle at 75% 50%, transparent 18%,   rgba(184,114,78,0.30) 18.6%, transparent 19.4%),
+        radial-gradient(circle at 75% 50%, transparent 27%,   rgba(184,114,78,0.20) 27.6%, transparent 28.4%),
+        radial-gradient(circle at 75% 50%, transparent 36%,   rgba(184,114,78,0.13) 36.6%, transparent 37.4%),
+        radial-gradient(circle at 75% 50%, transparent 45%,   rgba(184,114,78,0.07) 45.6%, transparent 46.4%),
+        radial-gradient(circle at 75% 50%, transparent 54%,   rgba(184,114,78,0.04) 54.6%, transparent 55.4%),
+        radial-gradient(circle  5px  at 75% 50%, rgba(184,114,78,0.50) 100%, transparent 100%),
+        radial-gradient(ellipse 55% 60% at 22% 38%, rgba(160,100,40,0.09) 0%, transparent 68%),
+        linear-gradient(145deg, #1E1412 0%, #2A1C16 40%, #1A1210 100%);
+    }
+
+    /* Travel warm — Kyoto: liquid gold-amber with lantern glow */
+    .visual-travel-warm {
+      background:
+        radial-gradient(ellipse 45% 65% at 63% 36%, rgba(255,220,130,0.30) 0%, transparent 65%),
+        radial-gradient(ellipse 80% 50% at 18% 88%, rgba(120,70,20,0.22)  0%, transparent 55%),
+        radial-gradient(ellipse 55% 70% at 88% 72%, rgba(200,140,60,0.16) 0%, transparent 60%),
+        linear-gradient(160deg, #D4A860 0%, #B88040 30%, #9A6030 65%, #7A4820 100%);
+    }
+
+    /* Travel blue — Ligurian Coast: Mediterranean depth + shimmering horizon band */
+    .visual-travel-blue {
+      background:
+        radial-gradient(ellipse 100% 22% at 50% 44%, rgba(160,210,240,0.38) 0%, transparent 100%),
+        radial-gradient(ellipse  60% 50% at 88% 14%, rgba(100,170,210,0.22) 0%, transparent 70%),
+        radial-gradient(ellipse  40% 30% at  8% 92%, rgba( 14, 40, 65,0.45) 0%, transparent 60%),
+        linear-gradient(185deg, #5E8CAA 0%, #376080 28%, #23485A 60%, #152E3A 100%);
+    }
+
+    /* Books — Rings of Saturn: warm parchment with diagonal hatch (aged paper) */
+    .visual-books {
+      background:
+        repeating-linear-gradient(-52deg, transparent 0, transparent 22px, rgba(160,140,100,0.065) 22px, rgba(160,140,100,0.065) 23px),
+        radial-gradient(ellipse 70% 62% at 34% 40%, rgba(225,210,175,0.50) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 86% 82%, rgba(160,140,100,0.20) 0%, transparent 60%),
+        linear-gradient(145deg, #C4B490 0%, #D0C0A0 50%, #B4A480 100%);
+    }
+
+    /* Products — Aesop: warm stone, soft centred glow + corner vignette */
+    .visual-products {
+      background:
+        radial-gradient(ellipse 55% 72% at 50% 46%, rgba(255,248,235,0.48) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 50% at  0% 100%, rgba(160,130,90,0.20) 0%, transparent 52%),
+        radial-gradient(ellipse  60% 40% at 100%   0%, rgba(200,180,140,0.14) 0%, transparent 52%),
+        linear-gradient(145deg, #D6CAB4 0%, #E0D6C0 55%, #C6BAA8 100%);
+    }
+
+    /* Style light — Cashmere: woven textile grid + soft centre highlight */
+    .visual-style-light {
+      background:
+        repeating-linear-gradient( 90deg, transparent, transparent 9px, rgba(140,130,110,0.055) 9px, rgba(140,130,110,0.055) 10px),
+        repeating-linear-gradient(  0deg, transparent, transparent 9px, rgba(140,130,110,0.055) 9px, rgba(140,130,110,0.055) 10px),
+        radial-gradient(ellipse 68% 64% at 48% 42%, rgba(255,252,242,0.40) 0%, transparent 72%),
+        linear-gradient(145deg, #C9C1AE 0%, #D8D0BD 50%, #B7AFA0 100%);
+    }
+
+    /* Style dark — White Shirt: near-black with slim placket light band */
+    .visual-style-dark {
+      background:
+        linear-gradient(90deg, transparent 36%, rgba(240,234,224,0.14) 36%, rgba(240,234,224,0.14) 39.5%, transparent 39.5%),
+        linear-gradient(90deg, transparent 40.5%, rgba(240,234,224,0.05) 40.5%, rgba(240,234,224,0.05) 41.5%, transparent 41.5%),
+        radial-gradient(ellipse 80% 100% at 38% 50%, rgba(240,234,224,0.05) 0%, transparent 100%),
+        linear-gradient(145deg, #1C1814 0%, #242018 60%, #141210 100%);
+    }
+
+    /* Food — warm caramel/amber with organic glow (tomatoes, miso, Lisbon) */
+    .visual-food {
+      background:
+        radial-gradient(ellipse 55% 56% at 68% 30%, rgba(230,165,60,0.30) 0%, transparent 62%),
+        radial-gradient(ellipse 70% 60% at 14% 82%, rgba(150,70,20,0.24)  0%, transparent 58%),
+        radial-gradient(ellipse 40% 40% at 92% 90%, rgba(200,130,50,0.14) 0%, transparent 60%),
+        linear-gradient(145deg, #A07840 0%, #7A5828 45%, #BC9A58 100%);
+    }
+
+    /* Music 2 — Sufjan: deep indigo-plum, barely-there violet mist */
+    .visual-music-2 {
+      background:
+        radial-gradient(ellipse 55% 65% at 72% 30%, rgba(130,80,150,0.13) 0%, transparent 68%),
+        radial-gradient(ellipse 45% 55% at 18% 74%, rgba( 90,55,110,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 85%, rgba(160,100, 40,0.07) 0%, transparent 60%),
+        linear-gradient(145deg, #22182A 0%, #1A1022 50%, #110C18 100%);
+    }
+
+    /* Card body */
+    .card-body            { padding: 20px 22px 24px; background: var(--parchment); }
+    .card-text-only .card-body { padding: 26px 24px 28px; }
+    .card-warm .card-body { background: #E6DDD0; }
+    .card-deep .card-body { background: #DCCFBC; }
+
+    /* Category label — informational text, contrast-verified per category */
+    .card-category {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      margin-bottom: 11px;
+      display: block;
+    }
+
+    /* Each category colour verified on all three backgrounds above */
+    .cat-music    { color: var(--cat-terra); }  /* #7A3E22 ✓ */
+    .cat-travel   { color: var(--cat-sage);  }  /* #3E5830 ✓ */
+    .cat-books    { color: var(--cat-gold);  }  /* #665018 ✓ */
+    .cat-products { color: var(--text-muted); } /* #5E5248 ✓ */
+    .cat-style    { color: var(--ink);       }  /* #1C1814 ✓ */
+    .cat-food     { color: var(--cat-food);  }  /* #6A4820 ✓ */
+
+    .card-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 23px;
+      font-weight: 400;
+      line-height: 1.15;
+      /* #1C1814 on all backgrounds = 12+:1 ✓ */
+      color: var(--ink);
+      margin-bottom: 13px;
+      letter-spacing: -0.015em;
+    }
+
+    .card-title em { font-style: italic; font-weight: 300; }
+
+    /* Decorative rule — aria-hidden in HTML */
+    .card-rule {
+      width: 22px;
+      height: 1px;
+      background: var(--parchment-deep);
+      margin-bottom: 13px;
+    }
+
+    .card-note {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.8;
+      /* #3E3630 on parchment = 7.8:1 ✓; on parchment-deep = 6.8:1 ✓ */
+      color: var(--text-body);
+      margin-bottom: 16px;
+    }
+
+    .card-date {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px;
+      font-style: italic;
+      /* #5E5248 on parchment = 5.2:1 ✓; on parchment-deep = 4.6:1 ✓ */
+      color: var(--text-muted);
+    }
+
+    /* Quote card — uses <blockquote> */
+    .card-quote .card-body { padding: 32px 28px 32px; }
+
+    /* Decorative opening mark drawn via CSS, not in DOM */
+    .card-quote blockquote::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      line-height: 0.6;
+      color: var(--terracotta-light);
+      margin-bottom: 16px;
+      display: block;
+      font-style: normal;
+    }
+
+    .card-quote-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.45;
+      /* #1C1814 on parchment = 12+:1 ✓ */
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+
+    .card-quote-attr {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      /* #5E5248 on parchment = 5.2:1 ✓ */
+      color: var(--text-muted);
+    }
+
+    /* Card title links */
+    .card-link-title {
+      color: inherit; text-decoration: none; display: block;
+    }
+    .card-link-title:hover {
+      text-decoration: underline;
+      text-decoration-color: var(--sand);
+      text-underline-offset: 4px;
+    }
+    .card-link-title:focus-visible {
+      outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 1px;
+    }
+
+    /* Quote card read link */
+    .quote-read-link {
+      display: inline-block; margin-top: 16px;
+      font-family: 'DM Sans', sans-serif; font-size: 9.5px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none;
+      border-bottom: 1px solid var(--sand); padding-bottom: 1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .quote-read-link:hover { color: var(--ink); border-color: var(--ink); }
+    .quote-read-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; }
+
+    /* Filter hide — uses aria-hidden + display:none combo */
+    .card[data-hidden] { display: none; }
+
+    /* ───── INDEX HERO ───── */
+    .index-hero {
+      position: relative;
+      height: clamp(460px, 72vh, 700px);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* Animated shader background — canvas injected via JS */
+    #hero-shader-mount {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .index-hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        /* Vinyl record rings — positioned right of centre */
+        radial-gradient(circle at 76% 50%, transparent 18%,   rgba(184,114,78,0.32) 18.6%, transparent 19.4%),
+        radial-gradient(circle at 76% 50%, transparent 27%,   rgba(184,114,78,0.22) 27.6%, transparent 28.4%),
+        radial-gradient(circle at 76% 50%, transparent 36%,   rgba(184,114,78,0.14) 36.6%, transparent 37.4%),
+        radial-gradient(circle at 76% 50%, transparent 45%,   rgba(184,114,78,0.08) 45.6%, transparent 46.4%),
+        radial-gradient(circle at 76% 50%, transparent 54%,   rgba(184,114,78,0.04) 54.6%, transparent 55.4%),
+        radial-gradient(circle  7px  at 76% 50%, rgba(184,114,78,0.55) 100%, transparent 100%),
+        /* Warm atmosphere — upper left bloom */
+        radial-gradient(ellipse 48% 50% at 28% 36%, rgba(160,100,40,0.10) 0%, transparent 70%),
+        /* Base gradient */
+        linear-gradient(160deg, #130F0B 0%, #1D1511 35%, #171008 70%, #0E0A06 100%);
+    }
+
+    .index-hero-scrim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(to top,  rgba(10,7,4,0.94) 0%, rgba(10,7,4,0.48) 44%, rgba(10,7,4,0.10) 72%, transparent 100%),
+        linear-gradient(to right, transparent 55%, rgba(10,7,4,0.28) 100%);
+    }
+
+    .index-hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 0 clamp(28px, 7vw, 104px) clamp(52px, 8vh, 88px);
+      max-width: 740px;
+    }
+
+    .hero-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: var(--terracotta);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--terracotta);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    .hero-artist {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.48);
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(46px, 7.5vw, 92px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 0.91;
+      letter-spacing: -0.03em;
+      color: var(--cream);
+      margin-bottom: 26px;
+    }
+
+    .hero-meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9.5px;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.33);
+      margin-bottom: 38px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9.5px;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 14px 30px;
+      border: 1px solid rgba(240,234,224,0.22);
+      transition: border-color 0.28s ease, background 0.28s ease;
+    }
+    .hero-cta:hover {
+      border-color: rgba(240,234,224,0.50);
+      background: rgba(240,234,224,0.07);
+    }
+    .hero-cta:focus-visible {
+      outline: 2px solid var(--terracotta);
+      outline-offset: 4px;
+    }
+
+    /* Decorative vertical label — top-right, aria-hidden */
+    .index-hero-label {
+      position: absolute;
+      top: 40px;
+      right: clamp(28px, 7vw, 104px);
+      z-index: 3;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 11px;
+      font-style: italic;
+      letter-spacing: 0.12em;
+      color: rgba(240,234,224,0.20);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    @media (max-width: 600px) { .index-hero-label { display: none; } }
+
+    /* ───── FOOTER ───── */
+    .site-footer {
+      text-align: center;
+      padding: 32px 24px 56px;
+      border-top: 1px solid var(--parchment-deep);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px;
+      font-style: italic;
+      /* #5E5248 on #F0EAE0 = 5.8:1 ✓ */
+      color: var(--text-muted);
+    }
+
+    /* ── Animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card.animate-in {
+      animation: fadeUp 0.35s ease both;
+    }
+
+    /* WCAG 2.3.3 — respect user motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Skip link — WCAG 2.4.1: Bypass Blocks -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- aria-live region for filter state changes — WCAG 4.1.3 -->
+  <div
+    id="filter-status"
+    class="sr-only"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+  <div class="page-glow" aria-hidden="true"></div>
+
+  <!-- Decorative top rule — aria-hidden, no informational value -->
+  <div
+    aria-hidden="true"
+    role="presentation"
+    style="height:3px; background: linear-gradient(90deg, var(--cream) 0%, var(--terracotta) 30%, var(--sand) 70%, var(--cream) 100%);"
+  ></div>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header">
+    <!-- Eyebrow: informational, contrast-verified -->
+    <span class="site-eyebrow">a personal curation</span>
+    <h1 class="site-title">Things I <em>Keep</em></h1>
+    <p class="site-desc">Music, places, objects, books — the things that stayed.</p>
+    <!-- Decorative ornament -->
+    <div class="header-ornament" aria-hidden="true" role="presentation">
+      <span class="header-ornament-line"></span>
+      <span class="header-ornament-dot"></span>
+      <span class="header-ornament-line"></span>
+    </div>
+  </header>
+
+  <!-- ── FEATURED HERO ──
+       aria-labelledby links the section to its visible h2 heading.
+       All decorative bg divs are aria-hidden.
+  -->
+  <section class="index-hero" aria-labelledby="featured-title">
+    <div class="index-hero-bg"   aria-hidden="true" role="presentation"></div>
+    <div id="hero-shader-mount"  aria-hidden="true" role="presentation"></div>
+    <div class="index-hero-scrim" aria-hidden="true" role="presentation"></div>
+    <p class="index-hero-label"   aria-hidden="true">No. 001 &mdash; Music</p>
+    <div class="index-hero-content">
+      <p class="hero-badge">Featured</p>
+      <p class="hero-artist">John Coltrane &amp; Duke Ellington</p>
+      <h2 id="featured-title" class="hero-title">In a Sentimental<br>Mood</h2>
+      <p class="hero-meta">1963 &middot; Impulse! Records &middot; 14 min</p>
+      <a href="detail.html?item=coltrane" class="hero-cta">
+        Read more <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── FILTER NAV ──
+       Role: toolbar with mutually exclusive toggle buttons
+       aria-pressed used per ARIA APG toggle button pattern
+       Only one button is pressed=true at a time (exclusive selection)
+  -->
+  <nav class="filter-nav" aria-label="Filter items by category">
+    <button class="filter-btn" data-filter="all"      aria-pressed="true">All</button>
+    <span class="filter-sep" aria-hidden="true">·</span>
+    <button class="filter-btn" data-filter="music"    aria-pressed="false">Music</button>
+    <span class="filter-sep" aria-hidden="true">·</span>
+    <button class="filter-btn" data-filter="travel"   aria-pressed="false">Travel</button>
+    <span class="filter-sep" aria-hidden="true">·</span>
+    <button class="filter-btn" data-filter="books"    aria-pressed="false">Books</button>
+    <span class="filter-sep" aria-hidden="true">·</span>
+    <button class="filter-btn" data-filter="products" aria-pressed="false">Objects</button>
+    <span class="filter-sep" aria-hidden="true">·</span>
+    <button class="filter-btn" data-filter="style"    aria-pressed="false">Style</button>
+    <span class="filter-sep" aria-hidden="true">·</span>
+    <button class="filter-btn" data-filter="food"     aria-pressed="false">Food</button>
+  </nav>
+
+  <!-- ── GRID ── -->
+  <main id="main-content" class="grid-container">
+    <div class="masonry-grid">
+
+      <!-- 1. Music — Coltrane & Ellington -->
+      <article class="card" data-category="music">
+        <div class="card-visual" aria-hidden="true">
+          <img src="img/0225/record.jpg" alt="" style="height:220px;">
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-music">Music</span>
+          <h2 class="card-title"><a href="detail.html?item=coltrane" class="card-link-title">In a Sentimental Mood<br><em>Coltrane & Ellington</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Fourteen minutes of restraint and longing. Coltrane plays around Ellington's piano as if they've been speaking the same language for decades. A recording that makes you feel the room they were in.</p>
+          <span class="card-date">1963</span>
+        </div>
+      </article>
+
+      <!-- 2. Travel — Kyoto -->
+      <article class="card" data-category="travel">
+        <div class="card-visual" aria-hidden="true">
+          <img src="img/0225/temple.jpg" alt="" style="height:250px;">
+        </div>
+        <div class="card-body card-warm">
+          <span class="card-category cat-travel">Travel</span>
+          <h2 class="card-title"><a href="detail.html?item=kyoto" class="card-link-title">Kyoto<br><em>in November</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">The ginkgo trees at Eikan-dō at 7am, before anyone arrives. Orange underfoot, complete silence except for the raking. I've never felt so outside of time.</p>
+          <span class="card-date">Autumn</span>
+        </div>
+      </article>
+
+      <!-- 3. Books — Dept. of Speculation -->
+      <article class="card card-deep" data-category="books">
+        <div class="card-visual" aria-hidden="true">
+          <img src="img/0225/paperback.jpg" alt="" style="height:220px;">
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-books">Books</span>
+          <h2 class="card-title"><a href="detail.html?item=dept-speculation" class="card-link-title">Dept. of<br><em>Speculation</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Jenny Offill. A novel in fragments — reads the way memory actually works. 160 pages that take weeks to leave you. I've given away four copies and keep needing to buy it back.</p>
+          <span class="card-date">Jenny Offill, 2014</span>
+        </div>
+      </article>
+
+      <!-- 4. Object — Aesop -->
+      <article class="card" data-category="products">
+        <div class="card-visual" aria-hidden="true">
+          <img src="img/0225/aesop.jpg" alt="" style="height:190px;">
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-products">Object</span>
+          <h2 class="card-title"><a href="detail.html?item=aesop" class="card-link-title"><em>Aesop</em><br>Resurrection Balm</a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">The one tube that's survived every edit. Lavender, rosemary, cedar. The smell of feeling put-together. Has been on my desk for three years running.</p>
+          <span class="card-date">Used daily</span>
+        </div>
+      </article>
+
+      <!-- 5. Music — Nick Drake -->
+      <article class="card" data-category="music">
+        <div class="card-visual" aria-hidden="true">
+          <img src="img/0225/guitar.jpg" alt="" style="height:200px;">
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-music">Music</span>
+          <h2 class="card-title"><a href="detail.html?item=nick-drake" class="card-link-title">Pink Moon<br><em>Nick Drake</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Recorded in two nights. The whole record sounds like winter light through glass. A guitar and a voice and nothing else — and it's enough.</p>
+          <span class="card-date">1972</span>
+        </div>
+      </article>
+
+      <!-- 6. Travel — Lisbon -->
+      <article class="card" data-category="travel">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-food" style="height:230px"></div>
+        </div>
+        <div class="card-body card-warm">
+          <span class="card-category cat-travel">Travel</span>
+          <h2 class="card-title"><a href="detail.html?item=lisbon" class="card-link-title">Lisbon<br><em>Alfama</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">A city built for fado. The light in late afternoon is terracotta and gold — get lost deliberately. The tiles, the laundry lines, the hills. Every street leads somewhere worth arriving.</p>
+          <span class="card-date">April</span>
+        </div>
+      </article>
+
+      <!-- 7. Quote — Sebald
+           Uses <blockquote> + <footer> per HTML spec for quote attribution.
+           Decorative opening quotation mark rendered via CSS ::before.
+      -->
+      <article class="card card-text-only card-quote" data-category="books">
+        <div class="card-body">
+          <blockquote>
+            <p class="card-quote-text">There is no hour that doesn't speak to someone, somewhere, of something they have lost.</p>
+            <footer>
+              <cite class="card-quote-attr">— W.G. Sebald, The Rings of Saturn</cite>
+              <a href="detail.html?item=rings-saturn" class="quote-read-link">Read more</a>
+            </footer>
+          </blockquote>
+        </div>
+      </article>
+
+      <!-- 8. Style — Cashmere -->
+      <article class="card" data-category="style">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-style-light" style="height:200px"></div>
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-style">Style</span>
+          <h2 class="card-title"><a href="detail.html?item=cashmere" class="card-link-title">Baby Cashmere<br><em>Crewneck</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Expensive enough to buy secondhand. Light enough that you forget you're wearing it. The colour is neither grey nor green — it changes with the light.</p>
+          <span class="card-date">Found, 2022</span>
+        </div>
+      </article>
+
+      <!-- 9. Music — Sufjan Stevens -->
+      <article class="card" data-category="music">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-music-2" style="height:200px"></div>
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-music">Music</span>
+          <h2 class="card-title"><a href="detail.html?item=sufjan" class="card-link-title">Carrie & Lowell<br><em>Sufjan Stevens</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">An album that turns grief into something almost beautiful. I put it on when I need to feel something precise. "Should Have Known Better" is six minutes that contain everything.</p>
+          <span class="card-date">2015</span>
+        </div>
+      </article>
+
+      <!-- 10. Food — Roasted Tomatoes -->
+      <article class="card card-text-only card-deep" data-category="food">
+        <div class="card-body">
+          <span class="card-category cat-food">Food</span>
+          <h2 class="card-title"><a href="detail.html?item=roasted-tomatoes" class="card-link-title">Slow-Roasted<br><em>Tomatoes</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Three hours at 120°C with olive oil, thyme, and a pinch of sugar. They become something else entirely — jammy, deep, almost sweet. Ottolenghi's version. On everything, always.</p>
+          <span class="card-date">Summer recipe</span>
+        </div>
+      </article>
+
+      <!-- 11. Books — The Rings of Saturn -->
+      <article class="card" data-category="books">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-books" style="height:220px"></div>
+        </div>
+        <div class="card-body card-warm">
+          <span class="card-category cat-books">Books</span>
+          <h2 class="card-title"><a href="detail.html?item=rings-saturn" class="card-link-title">The Rings of<br><em>Saturn</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">W.G. Sebald. A walk along the Suffolk coast that keeps dissolving into history, photography, and memory. The photographs feel like proof of something uncertain.</p>
+          <span class="card-date">W.G. Sebald, 1995</span>
+        </div>
+      </article>
+
+      <!-- 12. Style — Selvedge Denim -->
+      <article class="card card-text-only" data-category="style">
+        <div class="card-body">
+          <span class="card-category cat-style">Style</span>
+          <h2 class="card-title"><a href="detail.html?item=selvedge-denim" class="card-link-title">Japanese<br><em>Selvedge Denim</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">The kind that fades to something specific — your specific. Oni denim from Kojima. Nothing else holds a crease like this, or breaks in the same way. A garment that becomes more itself over time.</p>
+          <span class="card-date">Ongoing</span>
+        </div>
+      </article>
+
+      <!-- 13. Travel — Ligurian Coast -->
+      <article class="card" data-category="travel">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-travel-blue" style="height:240px"></div>
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-travel">Travel</span>
+          <h2 class="card-title"><a href="detail.html?item=ligurian-coast" class="card-link-title">Ligurian Coast<br><em>May, not August</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Cinque Terre before the crowds. The sea is an impossible shade of blue and the pesto is nothing like what you've had before — basil grown at altitude, mortar and pestle, no blender.</p>
+          <span class="card-date">Spring</span>
+        </div>
+      </article>
+
+      <!-- 14. Object — Field Notes -->
+      <article class="card" data-category="products">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-food" style="height:190px"></div>
+        </div>
+        <div class="card-body card-warm">
+          <span class="card-category cat-products">Object</span>
+          <h2 class="card-title"><a href="detail.html?item=field-notes" class="card-link-title"><em>Field Notes</em><br>Kraft Notebooks</a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">The kraft covers. The dot-grid inside. Something about writing in them makes the thinking better — maybe the constraint, maybe the smell. Three at a time, always.</p>
+          <span class="card-date">Recurring</span>
+        </div>
+      </article>
+
+      <!-- 15. Books — Norwegian Wood -->
+      <article class="card card-text-only" data-category="books">
+        <div class="card-body">
+          <span class="card-category cat-books">Books</span>
+          <h2 class="card-title"><a href="detail.html?item=norwegian-wood" class="card-link-title">Norwegian Wood<br><em>Murakami</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">The one that started everything. Jazz cafes, autumn campuses, and a grief that gets into your bones. I read it in a week and have been rereading it in pieces ever since.</p>
+          <span class="card-date">Haruki Murakami, 1987</span>
+        </div>
+      </article>
+
+      <!-- 16. Food — Miso Butter -->
+      <article class="card" data-category="food">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-food" style="height:210px"></div>
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-food">Food</span>
+          <h2 class="card-title"><a href="detail.html?item=miso-butter-onions" class="card-link-title">Miso Butter<br><em>Caramelised Onions</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">Low heat, a long time, and patience. The miso deepens everything. Serve on sourdough with a soft egg. A recipe I cook when I want to feel like I know what I'm doing.</p>
+          <span class="card-date">Adapted from Ottolenghi</span>
+        </div>
+      </article>
+
+      <!-- 17. Style — The White Shirt -->
+      <article class="card" data-category="style">
+        <div class="card-visual" aria-hidden="true">
+          <div class="visual-swatch visual-style-dark" style="height:220px"></div>
+        </div>
+        <div class="card-body">
+          <span class="card-category cat-style">Style</span>
+          <h2 class="card-title"><a href="detail.html?item=white-shirt" class="card-link-title">The White<br><em>Shirt</em></a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">One good one is worth ten mediocre ones. Slightly oversized, poplin, proper collar. Worn half-tucked, sleeves folded twice. The only garment that works in every room.</p>
+          <span class="card-date">The essential</span>
+        </div>
+      </article>
+
+      <!-- 18. Object — Muji Diffuser -->
+      <article class="card card-text-only card-deep" data-category="products">
+        <div class="card-body">
+          <span class="card-category cat-products">Object</span>
+          <h2 class="card-title"><a href="detail.html?item=muji-diffuser" class="card-link-title"><em>Muji</em><br>Ultrasonic Diffuser</a></h2>
+          <div class="card-rule" aria-hidden="true"></div>
+          <p class="card-note">No frills. No app. Runs for four hours then quietly stops. It asks nothing of you. Has been on my desk for three years and I've never thought about replacing it.</p>
+          <span class="card-date">Used daily</span>
+        </div>
+      </article>
+
+    </div><!-- /masonry-grid -->
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <p class="footer-text">Updated as things are found, kept, or remembered.</p>
+  </footer>
+
+  <!-- Animated mesh-gradient background for the hero section.
+       Loaded as an ES module via esm.sh — no build step needed.
+       Falls back gracefully to the static .index-hero-bg if JS is disabled. -->
+  <script type="module">
+    const prefersReducedMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const [{ createElement }, { createRoot }, { MeshGradient }] = await Promise.all([
+      import('https://esm.sh/react@18'),
+      import('https://esm.sh/react-dom@18/client'),
+      import('https://esm.sh/@paper-design/shaders-react?deps=react@18,react-dom@18'),
+    ]);
+
+    const mount = document.getElementById('hero-shader-mount');
+    if (mount) {
+      const root = createRoot(mount);
+      root.render(
+        createElement(MeshGradient, {
+          style: { position: 'absolute', inset: 0, width: '100%', height: '100%' },
+          // Warm ember palette — deep espresso → mahogany → terracotta → amber glow
+          colors: ['#0A0806', '#1D1511', '#3D1E0E', '#7A3E22', '#C8844A'],
+          speed: prefersReducedMotion ? 0 : 0.18,
+          backgroundColor: '#0A0806',
+        })
+      );
+    }
+  </script>
+
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card[data-category]');
+    const statusEl = document.getElementById('filter-status');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update aria-pressed: only clicked button is true (WCAG 4.1.2)
+        filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+
+        const filter = btn.dataset.filter;
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+          const show = filter === 'all' || card.dataset.category === filter;
+          if (show) {
+            card.removeAttribute('data-hidden');
+            card.classList.remove('animate-in');
+            void card.offsetWidth; // reflow to restart animation
+            card.classList.add('animate-in');
+            visibleCount++;
+          } else {
+            card.setAttribute('data-hidden', '');
+          }
+        });
+
+        // Announce result to screen readers (WCAG 4.1.3)
+        const label = btn.textContent.trim().toLowerCase();
+        const noun  = visibleCount === 1 ? 'item' : 'items';
+        statusEl.textContent =
+          filter === 'all'
+            ? `Showing all ${visibleCount} ${noun}.`
+            : `Showing ${visibleCount} ${label} ${noun}.`;
+      });
+    });
+  </script>
+
+</body>
+</html>

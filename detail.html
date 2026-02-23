@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Things I Keep</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:          #F0EAE0;
+      --parchment:      #E6DDD0;
+      --parchment-deep: #D8CDB9;
+      --terracotta:     #B8724E;
+      --terracotta-light: #E8CDB8;
+      --sand:           #C8B9A2;
+      --ink:            #1C1814;
+      --text-body:      #3E3630;
+      --text-muted:     #5E5248;
+      --cat-terra:      #7A3E22;
+      --cat-sage:       #3E5830;
+      --cat-gold:       #665018;
+      --cat-food:       #6A4820;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      mix-blend-mode: multiply;
+    }
+
+    /* ── Skip link ── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .skip-link {
+      position: absolute; top: -100%; left: 16px; z-index: 10000;
+      padding: 8px 16px; background: var(--ink); color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      letter-spacing: 0.05em; text-decoration: none;
+      border-radius: 0 0 4px 4px;
+    }
+    .skip-link:focus { top: 0; outline: 2px solid var(--terracotta); outline-offset: 2px; }
+
+    /* ── Sticky nav ── */
+    .page-nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(240, 234, 224, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sand);
+    }
+    .back-link {
+      font-family: 'DM Sans', sans-serif; font-size: 10.5px;
+      font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--ink); }
+    .back-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
+    .back-link-arrow { font-size: 14px; }
+    .nav-site { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; color: var(--text-muted); }
+
+    /* ── Visual swatch classes (same as index) ── */
+    .visual-music       { background: linear-gradient(145deg, #1E1412 0%, #2E1F18 40%, #1A1210 100%); }
+    .visual-music-2     { background: linear-gradient(145deg, #2A1E28 0%, #1E1622 50%, #120E18 100%); }
+    .visual-travel-warm { background: linear-gradient(135deg, #C8A87E 0%, #A8845A 40%, #8A6840 100%); }
+    .visual-travel-blue { background: linear-gradient(135deg, #3A5570 0%, #4E6E8A 50%, #2A3F52 100%); }
+    .visual-books       { background: linear-gradient(145deg, #C8B89A 0%, #D4C4A4 50%, #B8A888 100%); }
+    .visual-products    { background: linear-gradient(145deg, #DDD4C2 0%, #E4DAC8 60%, #C8BEA8 100%); }
+    .visual-style-light { background: linear-gradient(145deg, #DDD4C4 0%, #E8E0D0 50%, #C8BEB0 100%); }
+    .visual-style-dark  { background: linear-gradient(145deg, #1C1814 0%, #282018 60%, #141010 100%); }
+    .visual-food        { background: linear-gradient(135deg, #9A7848 0%, #7A5C34 50%, #B89060 100%); }
+
+    /* ── Hero (music / travel / style / food) ── */
+    .hero {
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+    }
+    .hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+    }
+    .hero-grain {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 120px 120px; mix-blend-mode: overlay;
+    }
+    .hero-scrim {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to top, rgba(14, 10, 8, 0.72) 0%, rgba(14, 10, 8, 0.2) 60%, transparent 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 3;
+      width: 100%; padding: 48px 48px 52px;
+    }
+    .hero-cat {
+      display: block;
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(240, 234, 224, 0.65);
+      margin-bottom: 10px;
+    }
+    .hero-label {
+      display: block;
+      font-family: 'DM Sans', sans-serif; font-size: 11px;
+      font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(240, 234, 224, 0.55); margin-bottom: 8px;
+    }
+    .hero-artist {
+      font-family: 'Cormorant Garamond', serif; font-size: 18px;
+      font-weight: 300; color: rgba(240, 234, 224, 0.8);
+      margin-bottom: 8px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 300; letter-spacing: -0.025em; line-height: 1.05;
+      color: #F0EAE0;
+      margin-bottom: 16px;
+    }
+    .hero-title-italic { font-style: italic; }
+    .hero-meta {
+      font-family: 'DM Sans', sans-serif; font-size: 11px;
+      font-weight: 300; letter-spacing: 0.12em;
+      color: rgba(240, 234, 224, 0.6);
+    }
+    .hero-season {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(240, 234, 224, 0.7);
+      border: 1px solid rgba(240, 234, 224, 0.3);
+      padding: 3px 10px;
+      margin-bottom: 16px;
+    }
+
+    /* ── Detail body ── */
+    .detail-body { padding: 56px 32px 80px; }
+    .detail-inner { max-width: 960px; margin: 0 auto; }
+    .detail-inner-narrow { max-width: 800px; margin: 0 auto; }
+
+    /* ── Two columns ── */
+    .two-col {
+      display: grid; gap: 48px;
+      grid-template-columns: 3fr 2fr;
+    }
+    .two-col-even { grid-template-columns: 1fr 1fr; }
+    .two-col-recipe { grid-template-columns: 2fr 3fr; }
+
+    @media (max-width: 720px) {
+      .two-col, .two-col-even, .two-col-recipe {
+        grid-template-columns: 1fr; gap: 32px;
+      }
+    }
+
+    /* ── Three columns ── */
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    @media (max-width: 720px) { .three-col { grid-template-columns: 1fr; } }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 16px; display: block;
+    }
+
+    /* ── Note text ── */
+    .detail-note-text {
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      font-weight: 300; line-height: 1.85;
+      color: var(--text-body);
+    }
+
+    /* ── Attribute dl ── */
+    .attr-list { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; }
+    .attr-list dt {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); padding-top: 2px; white-space: nowrap;
+    }
+    .attr-list dd {
+      font-family: 'Cormorant Garamond', serif; font-size: 15px;
+      color: var(--ink); line-height: 1.35;
+    }
+
+    /* ── Tags ── */
+    .tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+    .tag {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted); border: 1px solid var(--sand);
+      padding: 3px 10px;
+    }
+
+    /* ── Listen note ── */
+    .listen-note {
+      margin-top: 40px; padding: 24px 28px;
+      border-left: 2px solid var(--terracotta);
+      background: var(--parchment);
+    }
+    .listen-label {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--cat-terra); display: block; margin-bottom: 8px;
+    }
+    .listen-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 18px;
+      font-style: italic; color: var(--ink); line-height: 1.5;
+    }
+
+    /* ── Related list ── */
+    .related-list {
+      list-style: none;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      border: 1px solid var(--sand); margin-top: 0;
+    }
+    @media (max-width: 600px) { .related-list { grid-template-columns: 1fr; } }
+
+    .related-item {
+      background: var(--parchment);
+      padding: 18px 20px;
+    }
+    .related-item-label {
+      font-family: 'DM Sans', sans-serif; font-size: 8.5px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 6px;
+    }
+    .related-item-title {
+      font-family: 'Cormorant Garamond', serif; font-size: 16px;
+      color: var(--ink); line-height: 1.3;
+    }
+
+    /* ── Section divider ── */
+    .section-divider {
+      border: none; border-top: 1px solid var(--parchment-deep);
+      margin: 48px 0;
+    }
+
+    /* ── Travel: tagline ── */
+    .travel-tagline {
+      text-align: center; padding: 48px 32px 40px;
+      max-width: 640px; margin: 0 auto;
+    }
+    .travel-tagline-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 3vw, 32px);
+      font-style: italic; font-weight: 300; line-height: 1.4;
+      color: var(--ink); letter-spacing: -0.01em;
+    }
+
+    /* ── Travel: meta cell ── */
+    .meta-cell { padding: 4px 0; }
+    .meta-cell-label {
+      font-family: 'DM Sans', sans-serif; font-size: 8.5px;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 8px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--sand);
+    }
+    .meta-cell-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; color: var(--ink); line-height: 1.5;
+    }
+
+    /* ── Tip box ── */
+    .tip-box {
+      margin-top: 40px; padding: 20px 24px;
+      border-left: 2px solid var(--terracotta);
+      background: var(--parchment);
+    }
+    .tip-label {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--cat-terra); display: block; margin-bottom: 8px;
+    }
+    .tip-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 17px;
+      font-style: italic; color: var(--ink); line-height: 1.55;
+    }
+
+    /* ── Books: header ── */
+    .books-header {
+      padding: 72px 32px 56px; text-align: center;
+      max-width: 760px; margin: 0 auto;
+    }
+    .books-author {
+      font-family: 'DM Sans', sans-serif; font-size: 10px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 20px;
+    }
+    .books-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 300; letter-spacing: -0.03em; line-height: 1.0;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .books-title em { font-style: italic; }
+    .books-pub {
+      font-family: 'Cormorant Garamond', serif; font-size: 14px;
+      font-style: italic; color: var(--text-muted);
+    }
+
+    /* ── Books: passage ── */
+    .passage-block {
+      background: var(--parchment); padding: 32px 36px;
+    }
+    .passage-label {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 16px;
+    }
+    blockquote.passage {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 19px; font-style: italic; font-weight: 300;
+      line-height: 1.55; color: var(--ink);
+    }
+    blockquote.passage::before {
+      content: '\201C';
+      font-size: 56px; line-height: 0.5;
+      color: var(--terracotta-light);
+      display: block; margin-bottom: 12px;
+    }
+    .passage-context {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-top: 16px;
+    }
+
+    /* ── Objects: product visual ── */
+    .product-visual-wrap {
+      display: flex; justify-content: center; padding: 48px 32px 0;
+    }
+    .product-visual {
+      width: 100%; max-width: 480px; height: 260px;
+      position: relative; overflow: hidden;
+    }
+    .product-visual-bg {
+      position: absolute; inset: 0;
+    }
+    .product-visual-grain {
+      position: absolute; inset: 0; opacity: 0.1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 100px 100px; mix-blend-mode: overlay;
+    }
+    .product-header { text-align: center; padding: 28px 32px 0; }
+    .product-brand {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 10px;
+    }
+    .product-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(26px, 3.5vw, 42px);
+      font-weight: 300; letter-spacing: -0.02em; line-height: 1.1;
+      color: var(--ink);
+    }
+
+    /* ── Objects: 4-cell grid ── */
+    .attr-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; background: var(--sand);
+      border: 1px solid var(--sand); margin-top: 40px;
+    }
+    @media (min-width: 600px) { .attr-grid { grid-template-columns: repeat(4, 1fr); } }
+    .attr-grid-cell {
+      background: var(--parchment); padding: 18px 20px;
+    }
+    .attr-grid-label {
+      font-family: 'DM Sans', sans-serif; font-size: 8.5px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 8px;
+    }
+    .attr-grid-value {
+      font-family: 'Cormorant Garamond', serif; font-size: 16px;
+      color: var(--ink); line-height: 1.3;
+    }
+
+    /* ── Objects: verdict ── */
+    .verdict-block {
+      margin-top: 32px; padding: 20px 24px;
+      border-left: 2px solid var(--parchment-deep);
+    }
+    .verdict-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 18px;
+      font-style: italic; color: var(--text-body); line-height: 1.5;
+    }
+
+    /* ── Style: The Rule ── */
+    .rule-block {
+      margin-top: 52px;
+      padding: 40px 32px;
+      text-align: center; position: relative;
+    }
+    .rule-block::before, .rule-block::after {
+      content: '';
+      position: absolute;
+      left: 50%; transform: translateX(-50%);
+      width: 60px; height: 1px; background: var(--sand);
+    }
+    .rule-block::before { top: 0; }
+    .rule-block::after  { bottom: 0; }
+    .rule-label {
+      font-family: 'DM Sans', sans-serif; font-size: 8.5px;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 20px;
+    }
+    .rule-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 2.8vw, 30px);
+      font-style: italic; font-weight: 300; line-height: 1.4;
+      color: var(--ink); max-width: 600px; margin: 0 auto;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Food: badges ── */
+    .recipe-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .recipe-badge {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); border: 1px solid var(--sand);
+      padding: 5px 14px;
+    }
+
+    /* ── Food: intro ── */
+    .recipe-intro {
+      text-align: center; max-width: 600px; margin: 0 auto 48px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-style: italic; font-weight: 300;
+      line-height: 1.55; color: var(--text-body);
+    }
+
+    /* ── Food: ingredients ── */
+    .ingredients-list {
+      list-style: none; border-top: 1px solid var(--sand);
+    }
+    .ingredients-list li {
+      font-family: 'DM Sans', sans-serif; font-size: 12.5px;
+      font-weight: 300; color: var(--text-body);
+      line-height: 1.6; padding: 10px 0;
+      border-bottom: 1px solid var(--parchment-deep);
+      display: flex; gap: 10px; align-items: baseline;
+    }
+    .ingredients-list li::before {
+      content: '—'; color: var(--sand);
+      font-size: 10px; flex-shrink: 0; padding-top: 2px;
+    }
+
+    /* ── Food: method ── */
+    .method-list {
+      list-style: none; counter-reset: step-counter;
+    }
+    .method-list li {
+      counter-increment: step-counter;
+      display: grid; grid-template-columns: 36px 1fr; gap: 16px;
+      align-items: baseline;
+      padding: 20px 0; border-bottom: 1px solid var(--parchment-deep);
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      font-weight: 300; line-height: 1.8; color: var(--text-body);
+    }
+    .method-list li::before {
+      content: counter(step-counter);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px; font-weight: 300; color: var(--parchment-deep);
+      line-height: 1; text-align: right;
+    }
+
+    /* ── Food: serving + variations ── */
+    .serving-block, .variations-block {
+      background: var(--parchment); padding: 24px 28px;
+    }
+    .serving-label, .variations-label {
+      font-family: 'DM Sans', sans-serif; font-size: 9px;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-muted); display: block; margin-bottom: 10px;
+    }
+    .serving-text, .variations-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 16px;
+      font-style: italic; color: var(--ink); line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center; padding: 28px 24px 48px;
+      border-top: 1px solid var(--parchment-deep);
+    }
+    .footer-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 13px;
+      font-style: italic; color: var(--text-muted);
+    }
+
+    /* ── Not found ── */
+    .not-found {
+      text-align: center; padding: 120px 32px;
+      font-family: 'Cormorant Garamond', serif; font-size: 20px;
+      font-style: italic; color: var(--text-muted);
+    }
+    .not-found a {
+      display: block; margin-top: 20px;
+      font-family: 'DM Sans', sans-serif; font-size: 11px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--cat-terra); text-decoration: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <nav class="page-nav" aria-label="Site navigation">
+    <a href="/" class="back-link">
+      <span class="back-link-arrow" aria-hidden="true">←</span>
+      <span>Things I Keep</span>
+    </a>
+    <span class="nav-site" aria-hidden="true">a personal curation</span>
+  </nav>
+
+  <div id="page-render" aria-live="polite"></div>
+
+  <footer class="site-footer">
+    <p class="footer-text">Updated as things are found, kept, or remembered.</p>
+  </footer>
+
+  <script>
+  /* ─────────────────────────────────────────
+     ITEM DATA
+  ───────────────────────────────────────── */
+  const items = {
+
+    /* ── MUSIC ── */
+    'coltrane': {
+      category: 'music',
+      title: 'In a Sentimental Mood',
+      artist: 'John Coltrane & Duke Ellington',
+      year: '1963',
+      label: 'Impulse! Records',
+      duration: '14:07',
+      album: 'Duke Ellington & John Coltrane',
+      tags: ['Jazz', 'Ballad', 'Piano', 'Saxophone'],
+      image: 'img/0225/record.jpg',
+      note: 'Fourteen minutes of restraint and longing. Coltrane plays around Ellington\'s piano as if they\'ve been speaking the same language for decades. There\'s no ego in it — just two musicians in extraordinary rapport, making space for each other. A recording that makes you feel the room they were in.',
+      listen: 'Alone, at night, with nothing else demanding your attention. Start at the beginning and stay.',
+      related: [
+        { label: 'Also by Coltrane', title: 'A Love Supreme' },
+        { label: 'Also by Ellington', title: 'Money Jungle' },
+        { label: 'Same feeling', title: 'Quiet Kenny — Kenny Dorham' },
+      ],
+      visual: 'visual-music',
+    },
+    'nick-drake': {
+      category: 'music',
+      title: 'Pink Moon',
+      artist: 'Nick Drake',
+      year: '1972',
+      label: 'Island Records',
+      duration: '28:22',
+      album: 'Pink Moon',
+      tags: ['Folk', 'Acoustic', 'Late night', 'British'],
+      image: 'img/0225/guitar.jpg',
+      note: 'Recorded in two nights. The whole record sounds like winter light through glass — spare, still, achingly precise. A guitar and a voice and nothing else, and it\'s enough. The title track is 2 minutes and 7 seconds that feel much longer in the best possible way.',
+      listen: 'The full record, in order. In winter, ideally. In one sitting.',
+      related: [
+        { label: 'Earlier Drake', title: 'Five Leaves Left' },
+        { label: 'Same quietness', title: 'For Emma — Bon Iver' },
+        { label: 'Same space', title: 'The Milk-Eyed Mender — Joanna Newsom' },
+      ],
+      visual: 'visual-music-2',
+    },
+    'sufjan': {
+      category: 'music',
+      title: 'Carrie & Lowell',
+      artist: 'Sufjan Stevens',
+      year: '2015',
+      label: 'Asthmatic Kitty',
+      duration: '43:48',
+      album: 'Carrie & Lowell',
+      tags: ['Folk', 'Indie', 'Grief', 'Acoustic'],
+      note: 'An album that turns grief into something almost beautiful. Stevens made it after his mother\'s death — a woman who was largely absent from his childhood. The result is one of the most tender records about loss I\'ve encountered. "Should Have Known Better" is six minutes that contain everything.',
+      listen: '"Should Have Known Better" first. Then from the beginning, all the way through.',
+      related: [
+        { label: 'Earlier Stevens', title: 'Illinois' },
+        { label: 'Same grief', title: 'Hospice — The Antlers' },
+        { label: 'Same tenderness', title: 'Benji — Sun Kil Moon' },
+      ],
+      visual: 'visual-music-2',
+    },
+
+    /* ── TRAVEL ── */
+    'kyoto': {
+      category: 'travel',
+      title: 'Kyoto',
+      country: 'Japan',
+      season: 'November',
+      tagline: 'The world at its most deliberately beautiful.',
+      image: 'img/0225/temple.jpg',
+      note: 'The ginkgo trees at Eikan-dō at 7am, before anyone arrives. Orange underfoot, complete silence except for the raking. I\'ve never felt so outside of time. There\'s a discipline to how Kyoto presents itself — nothing is accidental, everything is considered — and in November it reaches its full expression.',
+      neighbourhood: 'Higashiyama · Nanzenji · Eikan-dō',
+      bestTime: 'Mid to late November for koyo. Arrive before 8am anywhere popular.',
+      stay: 'A ryokan in Gion. Hiiragiya for the historic wing, if budget allows.',
+      eat: 'Obanzai ryori — small Kyoto-style dishes. Any small counter restaurant, away from the main temple routes.',
+      nearby: 'Nara · Uji for matcha · Osaka for the evening',
+      tip: 'Book accommodation 3–4 months ahead. The city fills completely in November. The early morning is always quieter and always worth the alarm.',
+      visual: 'visual-travel-warm',
+    },
+    'lisbon': {
+      category: 'travel',
+      title: 'Lisbon',
+      country: 'Portugal',
+      season: 'April',
+      tagline: 'A city that has earned its melancholy.',
+      note: 'A city built for fado. The light in late afternoon is terracotta and gold — get lost deliberately. The tiles, the laundry lines, the hills. Every street leads somewhere worth arriving. Alfama in particular: go without a plan, no map, no particular destination. The hills will do the rest.',
+      neighbourhood: 'Alfama · Mouraria · Bairro Alto',
+      bestTime: 'April–May or September. August hollows it out — locals leave and the city empties.',
+      stay: 'A small apartment in Alfama. The walk down in the morning is the point.',
+      eat: 'Pastéis de Belém for breakfast. Bacalhau anywhere, once. Time Out Market, briefly, once.',
+      nearby: 'Sintra (40 min by train) · Setúbal coast · Comporta for undeveloped beach',
+      tip: 'The vintage trams are a tourist trap. Walk instead — the hills are worth every incline, and the city reveals itself differently on foot.',
+      visual: 'visual-food',
+    },
+    'ligurian-coast': {
+      category: 'travel',
+      title: 'Ligurian Coast',
+      country: 'Italy',
+      season: 'May',
+      tagline: 'The sea at its most implausible blue.',
+      note: 'Cinque Terre before the crowds. The sea is an impossible shade of blue and the pesto is nothing like what you\'ve had before — basil grown at altitude, mortar and pestle, no blender, served without apology. Take the trail between villages at sunrise. The light is something else.',
+      neighbourhood: 'Vernazza · Manarola · Camogli',
+      bestTime: 'May or early June. Swimmable sea, walkable trails, no queues.',
+      stay: 'Vernazza or Manarola — the smaller, quieter villages. Book the tiny hotels early in both cases.',
+      eat: 'Trofie al pesto (the real kind). Focaccia genovese with olive oil. Farinata with sea salt.',
+      nearby: 'Genova (1hr) · Portofino · Porto Venere',
+      tip: 'The Cinque Terre Card covers the hiking trails. The regional train between villages is essential — walk one direction, take the train back.',
+      visual: 'visual-travel-blue',
+    },
+
+    /* ── BOOKS ── */
+    'dept-speculation': {
+      category: 'books',
+      title: 'Dept. of Speculation',
+      author: 'Jenny Offill',
+      year: '2014',
+      publisher: 'Knopf',
+      themes: ['Marriage', 'Fragmentation', 'Memory', 'Art & Life'],
+      image: 'img/0225/paperback.jpg',
+      note: 'A novel in fragments — it reads the way memory actually works. 160 pages that take weeks to leave you. Offill writes about marriage, motherhood, and the strange persistence of art in a life that keeps interrupting itself. I\'ve given away four copies and keep needing to buy it back.',
+      passage: 'Philosophers used to speculate about ideal things — what was the ideal city, the ideal love, the ideal government. Now they talk about evolution and game theory. Somehow this seems a step down.',
+      passageContext: 'Part One',
+      related: [
+        { label: 'Also by Offill', title: 'Weather' },
+        { label: 'Same form', title: 'Outline — Rachel Cusk' },
+        { label: 'Same feeling', title: 'Grief Is the Thing with Feathers — Max Porter' },
+      ],
+    },
+    'rings-saturn': {
+      category: 'books',
+      title: 'The Rings of Saturn',
+      author: 'W.G. Sebald',
+      year: '1995',
+      publisher: 'Eichborn Verlag',
+      themes: ['Memory', 'History', 'Melancholy', 'Walking', 'Time'],
+      note: 'A walk along the Suffolk coast that keeps dissolving into history, photography, and the deep past. Unlike anything else I\'ve read. The photographs feel like proof of something uncertain. Sebald moves between a silk-weaving family in Norwich, the court of Rudolf II, and the Battle of Waterloo as if they\'re all happening simultaneously — because in memory, they are.',
+      passage: 'There is no hour that doesn\'t speak to someone, somewhere, of something they have lost.',
+      passageContext: 'Chapter IV',
+      related: [
+        { label: 'Also by Sebald', title: 'Austerlitz' },
+        { label: 'Also by Sebald', title: 'The Emigrants' },
+        { label: 'Same melancholy', title: 'Waterland — Graham Swift' },
+      ],
+    },
+    'norwegian-wood': {
+      category: 'books',
+      title: 'Norwegian Wood',
+      author: 'Haruki Murakami',
+      year: '1987',
+      publisher: 'Kodansha',
+      themes: ['Loss', 'Youth', 'Tokyo', 'Jazz', 'Coming of age'],
+      note: 'The one that started everything. Jazz cafes, autumn campuses, and a grief that gets into your bones. Murakami strips away his usual magical realism — this is his most plainly human novel. I read it in a week and have been rereading it in pieces ever since. The scene with Watanabe and Midori on the rooftop is one of the finest things I know.',
+      passage: 'No truth can cure the sadness we feel from losing a loved one. No truth, no sincerity, no strength, no kindness can cure that sorrow.',
+      passageContext: 'Part Two',
+      related: [
+        { label: 'Also by Murakami', title: 'Sputnik Sweetheart' },
+        { label: 'Same Tokyo', title: 'A Strange Tale from East of the River — Kafū Nagai' },
+        { label: 'Same grief', title: 'A Grief Observed — C.S. Lewis' },
+      ],
+    },
+
+    /* ── OBJECTS ── */
+    'aesop': {
+      category: 'products',
+      title: 'Resurrection Rinse-Free Hand Balm',
+      brand: 'Aesop',
+      price: '£35 · 75ml',
+      where: 'aesop.com · Aesop stores',
+      image: 'img/0225/aesop.jpg',
+      material: 'Mandelic acid, lavender stem, rosemary leaf, cedar bark',
+      origin: 'Melbourne, Australia',
+      usedSince: '3 years',
+      note: 'The one tube that has survived every edit. Lavender, rosemary, cedar — the smell of feeling put-together. Not sweet, not obvious. It leaves no residue, which is the first test. Has been on my desk through three desk arrangements and hasn\'t moved.',
+      verdict: 'Has more than earned its place. Would repurchase without deliberation.',
+      visual: 'visual-products',
+    },
+    'field-notes': {
+      category: 'products',
+      title: 'Kraft Ruled Notebooks',
+      brand: 'Field Notes',
+      price: '$12.95 · 3-pack',
+      where: 'fieldnotesbrand.com · Selected stockists',
+      material: 'Kraft cardboard cover · 60lb Finch Opaque body · Staple-bound',
+      origin: 'Printed in Illinois, USA',
+      usedSince: '5 years',
+      note: 'The kraft covers. The dot-grid inside. Something about writing in them makes the thinking better — maybe the constraint of the small page, maybe the particular smell of the paper stock. I\'ve bought every limited edition but always return to the original kraft. The simplest version is the right version.',
+      verdict: 'The best objects are the ones you stop noticing. These disappear into the desk and reappear when needed.',
+      visual: 'visual-food',
+    },
+    'muji-diffuser': {
+      category: 'products',
+      title: 'Ultrasonic Aroma Diffuser',
+      brand: 'Muji',
+      price: '£55',
+      where: 'muji.com · Muji stores',
+      material: 'PP and ABS resin · 250ml water tank capacity',
+      origin: 'Japan',
+      usedSince: '3 years',
+      note: 'No frills. No app. No Bluetooth. Runs for four hours then quietly stops. It asks nothing of you. Sits on the desk and does its job without ever asking to be noticed. Has been running the same essential oil blend for two years and has given me no reason to reconsider either the oil or the machine.',
+      verdict: 'The best objects make no demands. This one barely exists — and that\'s exactly why it works.',
+      visual: 'visual-products',
+    },
+
+    /* ── STYLE ── */
+    'cashmere': {
+      category: 'style',
+      title: 'Baby Cashmere Crewneck',
+      type: 'Knitwear',
+      fit: 'Slightly relaxed — one size up',
+      material: 'Baby cashmere · 2-ply · very fine gauge',
+      colour: 'Warm grey-green — changes with the light',
+      where: 'Loro Piana · or secondhand via Vestiaire, The RealReal',
+      care: 'Hand-wash cold · flat dry · cedar not mothballs · no hangers',
+      note: 'Expensive enough to buy secondhand. Light enough that you forget you\'re wearing it. The colour is neither grey nor green — it changes with the light, which is the point. Every room it enters, it looks slightly different. Wear with nothing else competing for attention.',
+      rule: 'One excellent piece outperforms ten adequate ones. Start with the best available version and wear it out.',
+      visual: 'visual-style-light',
+    },
+    'selvedge-denim': {
+      category: 'style',
+      title: 'Japanese Selvedge Denim',
+      type: 'Trousers',
+      fit: 'Straight leg · mid-rise · worn in over years',
+      material: 'Oni denim · 100% cotton · 14oz · selvedge weave · Kojima, Japan',
+      colour: 'Raw indigo — fades to your specific pattern',
+      where: 'Blue in Green (NYC) · Self Edge · The Bureau Belfast · Okayama Denim',
+      care: 'As infrequently as possible · spot-clean · hang outside · no machine wash for 6 months minimum',
+      note: 'The kind that fades to something specific — your specific. Oni denim from Kojima. Nothing else holds a crease like this, or breaks in the same way at the knees, or develops the same honeycombs behind the knee. A garment that becomes more itself — and more yours — over time.',
+      rule: 'The best clothes show evidence of being worn. Newness is not a quality.',
+      visual: 'visual-style-dark',
+    },
+    'white-shirt': {
+      category: 'style',
+      title: 'The White Shirt',
+      type: 'Shirting',
+      fit: 'Slightly oversized — one size up from your usual',
+      material: '100% cotton poplin · 80/2 two-ply · proper fused collar',
+      colour: 'Optical white — or natural white, which holds better over time',
+      where: 'Margaret Howell · Charvet · Kamakura Shirts · or a good local shirtmaker',
+      care: 'Machine wash 40°C · iron while slightly damp · press collar flat · no tumble dryer',
+      note: 'One good one is worth ten mediocre ones. The fabric should be heavy enough to hold its shape, the collar should stand without ironing supports, and it should be long enough to tuck properly. Worn half-tucked, sleeves folded exactly twice. The only garment that works in every room and every company.',
+      rule: 'Everything that works, works with a white shirt. It is not a default — it is a decision.',
+      visual: 'visual-style-light',
+    },
+
+    /* ── FOOD ── */
+    'roasted-tomatoes': {
+      category: 'food',
+      title: 'Slow-Roasted Tomatoes',
+      source: 'Adapted from Yotam Ottolenghi',
+      serves: '4 as a side, 2 on toast',
+      time: '3 hrs 15 min',
+      note: 'Three hours at low heat transforms something ordinary into something worth keeping. Patience is the only technique required.',
+      intro: 'The long cook concentrates and sweetens. What comes out of the oven is barely the same vegetable that went in — jammy, deep, almost caramelised at the edges. This is the kind of cooking that rewards a slow afternoon.',
+      ingredients: [
+        '800g medium vine tomatoes, halved',
+        '4 tbsp good olive oil',
+        '1 tbsp caster sugar',
+        '1 tsp flaky sea salt',
+        'Fresh thyme — 6–8 sprigs',
+        '3 garlic cloves, thinly sliced',
+        'Freshly ground black pepper',
+      ],
+      method: [
+        'Heat oven to 120°C fan (140°C conventional). Line a large baking tray with parchment.',
+        'Arrange tomatoes cut-side up on the tray. They should be close but not overlapping.',
+        'Drizzle generously with olive oil. Scatter the sugar, salt, and plenty of black pepper over the top.',
+        'Tuck the thyme sprigs between the tomatoes. Scatter the garlic slices.',
+        'Roast for 2½ to 3 hours, until deeply collapsed, lightly caramelised at the edges, and fragrant throughout.',
+        'Remove from oven. Store covered in the fridge for up to 5 days, in their cooking oil.',
+      ],
+      serving: 'On sourdough with ricotta and torn basil. Through pasta with anchovy and capers. Alongside roast chicken. Directly from the jar, with a spoon.',
+      variations: 'Add a torn anchovy fillet beneath each tomato before roasting. Or use cherry tomatoes at the same temperature for 1 hour 30 minutes.',
+      visual: 'visual-food',
+    },
+    'miso-butter-onions': {
+      category: 'food',
+      title: 'Miso Butter Caramelised Onions',
+      source: 'Adapted from Yotam Ottolenghi',
+      serves: '2 on toast',
+      time: '50–55 min',
+      note: 'A recipe I cook when I want to feel like I know what I\'m doing in a kitchen.',
+      intro: 'This is not a quick recipe. The onions need at least 40 minutes over low heat, and that time cannot be hurried. The miso adds depth that makes the result feel considered rather than simple.',
+      ingredients: [
+        '4 large white onions, halved and thinly sliced',
+        '2 tbsp unsalted butter',
+        '1 tbsp neutral oil',
+        '2 tbsp white miso paste',
+        '1 tsp cider vinegar',
+        'Salt and white pepper',
+        '2 thick slices sourdough, toasted',
+        '2 soft-boiled eggs',
+      ],
+      method: [
+        'Melt butter with oil in a wide, heavy-bottomed pan over medium-low heat.',
+        'Add the onions with a light pinch of salt. Stir to coat in the fat.',
+        'Cook over low heat for 40–45 minutes, stirring every 5–6 minutes. Resist turning up the heat. The onions will wilt, collapse, then slowly turn bronze. This takes as long as it takes.',
+        'When deeply golden and jammy, stir through the miso paste. Cook for 3 more minutes until fully incorporated and fragrant.',
+        'Add the cider vinegar, stir through, and taste for seasoning.',
+        'Serve on thick-cut toasted sourdough with a soft-boiled egg halved on top. Finish generously with white pepper.',
+      ],
+      serving: 'On toast with a soft-boiled egg is the essential preparation. Also excellent inside a grilled cheese, or alongside good sausages.',
+      variations: 'Red miso gives a deeper, earthier flavour. A splash of white wine with the miso adds brightness. Finely sliced shallots instead of onions for a more refined result.',
+      visual: 'visual-food',
+    },
+  };
+
+  /* ─────────────────────────────────────────
+     HELPERS
+  ───────────────────────────────────────── */
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  /* ─────────────────────────────────────────
+     RENDER: MUSIC
+  ───────────────────────────────────────── */
+  function renderMusic(item) {
+    const related = item.related.map(r => `
+      <li class="related-item">
+        <span class="related-item-label">${esc(r.label)}</span>
+        <span class="related-item-title">${esc(r.title)}</span>
+      </li>`).join('');
+
+    const tags = item.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('');
+
+    return `
+      <div class="hero ${esc(item.visual)}" style="height:62vh; min-height:380px;">
+        <div class="hero-bg ${esc(item.visual)}" aria-hidden="true" role="presentation"></div>
+        ${item.image ? `<img class="hero-img" src="${esc(item.image)}" alt="" aria-hidden="true">` : ''}
+        <div class="hero-grain" aria-hidden="true" role="presentation"></div>
+        <div class="hero-scrim" aria-hidden="true" role="presentation"></div>
+        <div class="hero-content">
+          <span class="hero-cat">Music</span>
+          <p class="hero-artist">${esc(item.artist)}</p>
+          <h1 class="hero-title"><em class="hero-title-italic">${esc(item.title)}</em></h1>
+          <p class="hero-meta">
+            <time datetime="${esc(item.year)}">${esc(item.year)}</time>
+            &thinsp;·&thinsp; ${esc(item.label)}
+            &thinsp;·&thinsp; ${esc(item.duration)}
+          </p>
+        </div>
+      </div>
+
+      <main id="main-content" class="detail-body">
+        <div class="detail-inner">
+
+          <div class="two-col">
+            <div>
+              <h2 class="section-label">Why it stays</h2>
+              <p class="detail-note-text">${esc(item.note)}</p>
+            </div>
+            <div>
+              <h2 class="section-label">Details</h2>
+              <dl class="attr-list">
+                <dt>Album</dt><dd>${esc(item.album)}</dd>
+                <dt>Year</dt><dd><time datetime="${esc(item.year)}">${esc(item.year)}</time></dd>
+                <dt>Label</dt><dd>${esc(item.label)}</dd>
+                <dt>Duration</dt><dd>${esc(item.duration)}</dd>
+              </dl>
+              <div class="tags-row" aria-label="Tags">${tags}</div>
+            </div>
+          </div>
+
+          <div class="listen-note" role="note">
+            <span class="listen-label">Best heard</span>
+            <p class="listen-text">${esc(item.listen)}</p>
+          </div>
+
+          <hr class="section-divider" aria-hidden="true">
+
+          <section aria-label="Related listening">
+            <h2 class="section-label">Related listening</h2>
+            <ul class="related-list" role="list">
+              ${related}
+            </ul>
+          </section>
+
+        </div>
+      </main>`;
+  }
+
+  /* ─────────────────────────────────────────
+     RENDER: TRAVEL
+  ───────────────────────────────────────── */
+  function renderTravel(item) {
+    const related = item.nearby.split(' · ').map(r => `
+      <li class="related-item">
+        <span class="related-item-label">Nearby</span>
+        <span class="related-item-title">${esc(r)}</span>
+      </li>`).join('');
+
+    return `
+      <div class="hero ${esc(item.visual)}" style="height:58vh; min-height:360px;">
+        <div class="hero-bg ${esc(item.visual)}" aria-hidden="true" role="presentation"></div>
+        ${item.image ? `<img class="hero-img" src="${esc(item.image)}" alt="" aria-hidden="true">` : ''}
+        <div class="hero-grain" aria-hidden="true" role="presentation"></div>
+        <div class="hero-scrim" aria-hidden="true" role="presentation"></div>
+        <div class="hero-content">
+          <span class="hero-season">${esc(item.season)}</span>
+          <p class="hero-label">${esc(item.country)}</p>
+          <h1 class="hero-title">${esc(item.title)}</h1>
+        </div>
+      </div>
+
+      <main id="main-content">
+        <div class="travel-tagline">
+          <p class="travel-tagline-text"><em>${esc(item.tagline)}</em></p>
+        </div>
+
+        <div class="detail-body" style="padding-top:0;">
+          <div class="detail-inner">
+
+            <div class="three-col" aria-label="Key information">
+              <div class="meta-cell">
+                <span class="meta-cell-label">Where to go</span>
+                <p class="meta-cell-value">${esc(item.neighbourhood)}</p>
+              </div>
+              <div class="meta-cell">
+                <span class="meta-cell-label">Best time</span>
+                <p class="meta-cell-value">${esc(item.bestTime)}</p>
+              </div>
+              <div class="meta-cell">
+                <span class="meta-cell-label">Where to stay</span>
+                <p class="meta-cell-value">${esc(item.stay)}</p>
+              </div>
+            </div>
+
+            <hr class="section-divider" aria-hidden="true">
+
+            <div class="two-col-even">
+              <div class="meta-cell">
+                <span class="meta-cell-label">What to eat</span>
+                <p class="meta-cell-value">${esc(item.eat)}</p>
+              </div>
+              <div class="meta-cell">
+                <span class="meta-cell-label">From here</span>
+                <p class="meta-cell-value">${esc(item.nearby)}</p>
+              </div>
+            </div>
+
+            <hr class="section-divider" aria-hidden="true">
+
+            <div style="max-width:640px;">
+              <h2 class="section-label">What I remember</h2>
+              <p class="detail-note-text">${esc(item.note)}</p>
+            </div>
+
+            <div class="tip-box" role="note">
+              <span class="tip-label">Worth knowing</span>
+              <p class="tip-text">${esc(item.tip)}</p>
+            </div>
+
+          </div>
+        </div>
+      </main>`;
+  }
+
+  /* ─────────────────────────────────────────
+     RENDER: BOOKS
+  ───────────────────────────────────────── */
+  function renderBooks(item) {
+    const tags  = item.themes.map(t => `<span class="tag">${esc(t)}</span>`).join('');
+    const related = item.related.map(r => `
+      <li class="related-item">
+        <span class="related-item-label">${esc(r.label)}</span>
+        <span class="related-item-title">${esc(r.title)}</span>
+      </li>`).join('');
+
+    return `
+      ${item.image ? `
+      <div class="hero" style="height:52vh; min-height:320px;">
+        <img class="hero-img" src="${esc(item.image)}" alt="" aria-hidden="true">
+        <div class="hero-grain" aria-hidden="true" role="presentation"></div>
+        <div class="hero-scrim" aria-hidden="true" role="presentation"></div>
+      </div>` : ''}
+      <main id="main-content">
+        <div class="books-header">
+          <span class="books-author">${esc(item.author)}</span>
+          <h1 class="books-title"><em>${esc(item.title)}</em></h1>
+          <p class="books-pub">
+            <time datetime="${esc(item.year)}">${esc(item.year)}</time>
+            &ensp;·&ensp; ${esc(item.publisher)}
+          </p>
+        </div>
+
+        <div class="detail-body" style="padding-top:0;">
+          <div class="detail-inner">
+
+            <div class="two-col">
+              <div>
+                <h2 class="section-label">Why it stays</h2>
+                <p class="detail-note-text">${esc(item.note)}</p>
+                <div class="tags-row" style="margin-top:24px;" aria-label="Themes">
+                  ${tags}
+                </div>
+              </div>
+
+              <div class="passage-block">
+                <span class="passage-label">A passage</span>
+                <blockquote class="passage">
+                  ${esc(item.passage)}
+                  <cite class="passage-context">${esc(item.passageContext)}</cite>
+                </blockquote>
+              </div>
+            </div>
+
+            <hr class="section-divider" aria-hidden="true">
+
+            <section aria-label="Related reading">
+              <h2 class="section-label">If this one stayed</h2>
+              <ul class="related-list" role="list">
+                ${related}
+              </ul>
+            </section>
+
+          </div>
+        </div>
+      </main>`;
+  }
+
+  /* ─────────────────────────────────────────
+     RENDER: OBJECTS
+  ───────────────────────────────────────── */
+  function renderObjects(item) {
+    return `
+      <main id="main-content">
+        <div class="product-visual-wrap" aria-hidden="true" role="presentation">
+          <div class="product-visual">
+            ${item.image
+              ? `<img class="hero-img" src="${esc(item.image)}" alt="">`
+              : `<div class="product-visual-bg ${esc(item.visual)}"></div>`}
+            <div class="product-visual-grain"></div>
+          </div>
+        </div>
+
+        <div class="product-header">
+          <span class="product-brand">${esc(item.brand)}</span>
+          <h1 class="product-title">${esc(item.title)}</h1>
+        </div>
+
+        <div class="detail-body">
+          <div class="detail-inner">
+
+            <div class="attr-grid" role="list" aria-label="Product details">
+              <div class="attr-grid-cell" role="listitem">
+                <span class="attr-grid-label">Material</span>
+                <p class="attr-grid-value">${esc(item.material)}</p>
+              </div>
+              <div class="attr-grid-cell" role="listitem">
+                <span class="attr-grid-label">Origin</span>
+                <p class="attr-grid-value">${esc(item.origin)}</p>
+              </div>
+              <div class="attr-grid-cell" role="listitem">
+                <span class="attr-grid-label">In use since</span>
+                <p class="attr-grid-value">${esc(item.usedSince)}</p>
+              </div>
+              <div class="attr-grid-cell" role="listitem">
+                <span class="attr-grid-label">Price · Where</span>
+                <p class="attr-grid-value">${esc(item.price)}<br>
+                  <span style="font-size:13px; color:var(--text-muted);">${esc(item.where)}</span>
+                </p>
+              </div>
+            </div>
+
+            <hr class="section-divider" aria-hidden="true">
+
+            <div style="max-width:600px;">
+              <h2 class="section-label">The argument for it</h2>
+              <p class="detail-note-text">${esc(item.note)}</p>
+            </div>
+
+            <div class="verdict-block" role="note">
+              <p class="verdict-text">${esc(item.verdict)}</p>
+            </div>
+
+          </div>
+        </div>
+      </main>`;
+  }
+
+  /* ─────────────────────────────────────────
+     RENDER: STYLE
+  ───────────────────────────────────────── */
+  function renderStyle(item) {
+    return `
+      <div class="hero ${esc(item.visual)}" style="height:52vh; min-height:320px;">
+        <div class="hero-bg ${esc(item.visual)}" aria-hidden="true" role="presentation"></div>
+        <div class="hero-grain" aria-hidden="true" role="presentation"></div>
+        <div class="hero-scrim" aria-hidden="true" role="presentation"></div>
+        <div class="hero-content">
+          <span class="hero-cat">${esc(item.type)}</span>
+          <h1 class="hero-title"><em class="hero-title-italic">${esc(item.title)}</em></h1>
+        </div>
+      </div>
+
+      <main id="main-content" class="detail-body">
+        <div class="detail-inner">
+
+          <div class="two-col">
+            <div>
+              <h2 class="section-label">Why it stays</h2>
+              <p class="detail-note-text">${esc(item.note)}</p>
+            </div>
+
+            <div>
+              <h2 class="section-label">Details</h2>
+              <dl class="attr-list">
+                <dt>Material</dt><dd>${esc(item.material)}</dd>
+                <dt>Fit</dt>    <dd>${esc(item.fit)}</dd>
+                <dt>Colour</dt> <dd>${esc(item.colour)}</dd>
+                <dt>Find it</dt><dd>${esc(item.where)}</dd>
+                <dt>Care</dt>   <dd>${esc(item.care)}</dd>
+              </dl>
+            </div>
+          </div>
+
+          <div class="rule-block">
+            <span class="rule-label" aria-hidden="true">The rule</span>
+            <p class="rule-text">&ldquo;${esc(item.rule)}&rdquo;</p>
+          </div>
+
+        </div>
+      </main>`;
+  }
+
+  /* ─────────────────────────────────────────
+     RENDER: FOOD
+  ───────────────────────────────────────── */
+  function renderFood(item) {
+    const ingredients = item.ingredients
+      .map(i => `<li>${esc(i)}</li>`).join('');
+    const method = item.method
+      .map(s => `<li>${esc(s)}</li>`).join('');
+
+    return `
+      <div class="hero visual-food" style="height:50vh; min-height:300px;">
+        <div class="hero-bg visual-food" aria-hidden="true" role="presentation"></div>
+        <div class="hero-grain" aria-hidden="true" role="presentation"></div>
+        <div class="hero-scrim" aria-hidden="true" role="presentation"></div>
+        <div class="hero-content">
+          <span class="hero-cat">Food</span>
+          <h1 class="hero-title">${esc(item.title)}</h1>
+          <p class="hero-meta">${esc(item.source)}</p>
+        </div>
+      </div>
+
+      <main id="main-content" class="detail-body">
+        <div class="detail-inner">
+
+          <div class="recipe-badges" role="list" aria-label="Recipe info">
+            <span class="recipe-badge" role="listitem">Serves ${esc(item.serves)}</span>
+            <span class="recipe-badge" role="listitem">${esc(item.time)}</span>
+          </div>
+
+          <p class="recipe-intro">${esc(item.intro)}</p>
+
+          <div class="two-col two-col-recipe">
+            <section aria-label="Ingredients">
+              <h2 class="section-label">Ingredients</h2>
+              <ul class="ingredients-list" role="list">
+                ${ingredients}
+              </ul>
+            </section>
+
+            <section aria-label="Method">
+              <h2 class="section-label">Method</h2>
+              <ol class="method-list">
+                ${method}
+              </ol>
+            </section>
+          </div>
+
+          <hr class="section-divider" aria-hidden="true">
+
+          <div class="two-col-even">
+            <div class="serving-block">
+              <span class="serving-label">Serving</span>
+              <p class="serving-text">${esc(item.serving)}</p>
+            </div>
+            <div class="variations-block">
+              <span class="variations-label">Variations</span>
+              <p class="variations-text">${esc(item.variations)}</p>
+            </div>
+          </div>
+
+        </div>
+      </main>`;
+  }
+
+  /* ─────────────────────────────────────────
+     ROUTING
+  ───────────────────────────────────────── */
+  const renderers = {
+    music:    renderMusic,
+    travel:   renderTravel,
+    books:    renderBooks,
+    products: renderObjects,
+    style:    renderStyle,
+    food:     renderFood,
+  };
+
+  const params = new URLSearchParams(location.search);
+  const id     = params.get('item');
+  const item   = id ? items[id] : null;
+  const render = document.getElementById('page-render');
+
+  if (!item) {
+    document.title = 'Not found — Things I Keep';
+    render.innerHTML = `
+      <div class="not-found" role="alert">
+        <p>This item wasn't found.</p>
+        <a href="/">← Back to Things I Keep</a>
+      </div>`;
+  } else {
+    document.title = `${item.title} — Things I Keep`;
+    render.innerHTML = renderers[item.category](item);
+  }
+  </script>
+
+</body>
+</html>
