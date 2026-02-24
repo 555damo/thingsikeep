@@ -530,6 +530,77 @@
       color: var(--cat-terra); text-decoration: none;
     }
 
+    /* ── Page share button (in sticky nav) ── */
+    .page-share {
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'DM Sans', sans-serif; font-size: 9.5px;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 6px 0;
+      transition: color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .page-share:hover { color: var(--ink); }
+    .page-share:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
+    .page-share.copied { color: var(--terracotta); }
+
+    /* ── Filter nav (identical style to index) ── */
+    .filter-nav {
+      display: flex; align-items: center;
+      justify-content: center; gap: 24px;
+      padding: 16px 32px 20px;
+      border-bottom: 1px solid var(--parchment-deep);
+      flex-wrap: wrap;
+      background: var(--cream);
+    }
+    .filter-btns { display: flex; align-items: center; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 10.5px;
+      font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); background: none; border: none;
+      cursor: pointer; padding: 8px 16px; position: relative;
+      text-decoration: none; display: inline-block;
+      transition: color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .filter-btn::after {
+      content: ''; position: absolute; bottom: 4px;
+      left: 16px; right: 16px; height: 1px;
+      background: var(--terracotta); transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .filter-btn:hover { color: var(--ink); }
+    .filter-btn.active { color: var(--ink); }
+    .filter-btn.active::after { transform: scaleX(1); }
+    .filter-btn:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
+    .filter-sep { font-family: 'Cormorant Garamond', serif; font-size: 14px; color: var(--sand); user-select: none; }
+
+    /* Search */
+    .search-wrap { position: relative; display: flex; align-items: center; }
+    .search-wrap::before {
+      content: ''; position: absolute; left: 0;
+      width: 11px; height: 11px; border: 1px solid var(--sand);
+      border-radius: 50%; pointer-events: none; transition: border-color 0.2s ease;
+    }
+    .search-wrap::after {
+      content: ''; position: absolute; left: 8px; top: 11px;
+      width: 4px; height: 1px; background: var(--sand);
+      transform: rotate(45deg); pointer-events: none;
+    }
+    .search-wrap:focus-within::before { border-color: var(--terracotta); }
+    .search-input {
+      font-family: 'DM Sans', sans-serif; font-size: 9.5px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text-body); background: transparent;
+      border: none; border-bottom: 1px solid var(--sand);
+      padding: 5px 0 5px 22px; width: 140px; outline: none;
+      transition: border-color 0.2s ease, width 0.3s ease;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--terracotta); width: 180px; }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -548,6 +619,38 @@
       <span>Things I Keep</span>
     </a>
     <span class="nav-site" aria-hidden="true">a personal curation</span>
+    <button class="page-share" aria-label="Share this page">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span class="page-share-label">Share</span>
+    </button>
+  </nav>
+
+  <nav class="filter-nav" aria-label="Browse by category">
+    <div class="filter-btns">
+      <a class="filter-btn" href="index.html">All</a>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <a class="filter-btn" href="index.html?filter=music">Music</a>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <a class="filter-btn" href="index.html?filter=travel">Travel</a>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <a class="filter-btn" href="index.html?filter=books">Books</a>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <a class="filter-btn" href="index.html?filter=products">Objects</a>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <a class="filter-btn" href="index.html?filter=style">Style</a>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <a class="filter-btn" href="index.html?filter=food">Food</a>
+    </div>
+    <div class="search-wrap">
+      <input
+        class="search-input"
+        type="search"
+        placeholder="Search"
+        aria-label="Search items"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
   </nav>
 
   <div id="page-render" aria-live="polite"></div>
@@ -1279,6 +1382,42 @@
     document.title = `${item.title} — Things I Keep`;
     render.innerHTML = renderers[item.category](item);
   }
+
+  /* ── Highlight active category in filter nav ── */
+  if (item) {
+    const activeLink = document.querySelector(`.filter-btn[href="index.html?filter=${item.category}"]`);
+    if (activeLink) activeLink.classList.add('active');
+  }
+
+  /* ── Share button ── */
+  const shareBtn  = document.querySelector('.page-share');
+  const shareLabel = shareBtn?.querySelector('.page-share-label');
+  shareBtn?.addEventListener('click', async () => {
+    const url   = location.href;
+    const title = item ? `${item.title} — Things I Keep` : 'Things I Keep';
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        shareBtn.classList.add('copied');
+        shareLabel.textContent = 'Copied';
+        setTimeout(() => {
+          shareBtn.classList.remove('copied');
+          shareLabel.textContent = 'Share';
+        }, 2000);
+      }
+    } catch (_) {}
+  });
+
+  /* ── Search: navigate to homepage with query ── */
+  const searchInput = document.querySelector('.search-input');
+  searchInput?.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && searchInput.value.trim()) {
+      location.href = `index.html?q=${encodeURIComponent(searchInput.value.trim())}`;
+    }
+    if (e.key === 'Escape') searchInput.value = '';
+  });
   </script>
 
 </body>

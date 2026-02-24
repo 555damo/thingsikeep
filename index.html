@@ -189,8 +189,8 @@
     .filter-nav {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      justify-content: center;
+      gap: 24px;
       padding: 20px 32px 24px;
       position: relative;
       z-index: 1;
@@ -1299,6 +1299,20 @@
     searchInput.addEventListener('keydown', e => {
       if (e.key === 'Escape') { searchInput.value = ''; applyFilters(); }
     });
+
+    /* ── Apply filter/search from URL params (linked from detail pages) ── */
+    const params = new URLSearchParams(location.search);
+    const urlFilter = params.get('filter');
+    const urlQuery  = params.get('q');
+    if (urlFilter) {
+      const btn = document.querySelector(`.filter-btn[data-filter="${urlFilter}"]`);
+      if (btn) {
+        filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
+        btn.setAttribute('aria-pressed', 'true');
+      }
+    }
+    if (urlQuery) searchInput.value = urlQuery;
+    if (urlFilter || urlQuery) applyFilters();
   </script>
 
 </body>
