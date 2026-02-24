@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Things I Keep</title>
+  <meta name="description" content="Music, places, objects, books — the things that stayed.">
+  <meta property="og:type"        content="article">
+  <meta property="og:site_name"   content="The Kept List">
+  <meta property="og:title"       content="Things I Keep">
+  <meta property="og:description" content="Music, places, objects, books — the things that stayed.">
+  <meta property="og:url"         content="https://thekeptlist.com">
+  <meta name="twitter:card"       content="summary">
+  <meta name="twitter:title"      content="Things I Keep">
+  <meta name="twitter:description" content="Music, places, objects, books — the things that stayed.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1371,6 +1380,16 @@
   const item   = id ? items[id] : null;
   const render = document.getElementById('page-render');
 
+  function setMeta(title, description, url) {
+    document.title = title;
+    document.querySelector('meta[property="og:title"]').content    = title;
+    document.querySelector('meta[property="og:description"]').content = description;
+    document.querySelector('meta[property="og:url"]').content      = url;
+    document.querySelector('meta[name="twitter:title"]').content   = title;
+    document.querySelector('meta[name="twitter:description"]').content = description;
+    document.querySelector('meta[name="description"]').content     = description;
+  }
+
   if (!item) {
     document.title = 'Not found — Things I Keep';
     render.innerHTML = `
@@ -1379,7 +1398,9 @@
         <a href="/">← Back to Things I Keep</a>
       </div>`;
   } else {
-    document.title = `${item.title} — Things I Keep`;
+    const pageUrl = `https://thekeptlist.com/detail.html?item=${id}`;
+    const desc    = item.note ? item.note.slice(0, 140).trimEnd() + '…' : 'Music, places, objects, books — the things that stayed.';
+    setMeta(`${item.title} — The Kept List`, desc, pageUrl);
     render.innerHTML = renderers[item.category](item);
   }
 
