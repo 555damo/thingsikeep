@@ -189,13 +189,78 @@
     .filter-nav {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0;
-      padding: 28px 32px 36px;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 32px 24px;
       position: relative;
       z-index: 1;
       flex-wrap: wrap;
     }
+
+    .filter-btns {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    /* Search */
+    .search-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-wrap::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 11px; height: 11px;
+      border: 1px solid var(--sand);
+      border-radius: 50%;
+      pointer-events: none;
+      transition: border-color 0.2s ease;
+    }
+    .search-wrap::after {
+      content: '';
+      position: absolute;
+      left: 8px; top: 11px;
+      width: 4px; height: 1px;
+      background: var(--sand);
+      transform: rotate(45deg);
+      pointer-events: none;
+      transition: background 0.2s ease;
+    }
+    .search-input:focus ~ .search-wrap::before,
+    .search-wrap:focus-within::before { border-color: var(--terracotta); }
+    .search-input {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-body);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--sand);
+      padding: 5px 0 5px 22px;
+      width: 140px;
+      outline: none;
+      transition: border-color 0.2s ease, width 0.3s ease;
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus { border-color: var(--terracotta); width: 180px; }
+
+    /* No results message */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 80px 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+    }
+    .no-results.visible { display: block; }
 
     /* aria-pressed="false" state */
     .filter-btn {
@@ -698,6 +763,49 @@
       animation: fadeUp 0.35s ease both;
     }
 
+    /* Thumbnail links */
+    a.card-visual {
+      display: block;
+      cursor: pointer;
+    }
+    a.card-visual:focus-visible {
+      outline: 2px solid var(--cat-terra);
+      outline-offset: -2px;
+    }
+    a.card-visual img,
+    a.card-visual .visual-swatch { pointer-events: none; }
+
+    /* Card footer (date + share) */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+    }
+    .card-share {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 0 4px 8px;
+      color: var(--sand);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+    .card-share:hover { color: var(--terracotta); }
+    .card-share:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
+    .card-share-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 8.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: opacity 0.25s ease;
+    }
+    .card-share.copied .card-share-label { color: var(--terracotta); }
+
     /* WCAG 2.3.3 — respect user motion preference */
     @media (prefers-reduced-motion: reduce) {
       *,
@@ -747,10 +855,36 @@
     </div>
   </header>
 
-  <!-- ── FEATURED HERO ──
-       aria-labelledby links the section to its visible h2 heading.
-       All decorative bg divs are aria-hidden.
-  -->
+  <!-- ── FILTER NAV + SEARCH ── -->
+  <nav class="filter-nav" aria-label="Filter and search items">
+    <div class="filter-btns">
+      <button class="filter-btn" data-filter="all"      aria-pressed="true">All</button>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <button class="filter-btn" data-filter="music"    aria-pressed="false">Music</button>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <button class="filter-btn" data-filter="travel"   aria-pressed="false">Travel</button>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <button class="filter-btn" data-filter="books"    aria-pressed="false">Books</button>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <button class="filter-btn" data-filter="products" aria-pressed="false">Objects</button>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <button class="filter-btn" data-filter="style"    aria-pressed="false">Style</button>
+      <span class="filter-sep" aria-hidden="true">·</span>
+      <button class="filter-btn" data-filter="food"     aria-pressed="false">Food</button>
+    </div>
+    <div class="search-wrap">
+      <input
+        class="search-input"
+        type="search"
+        placeholder="Search"
+        aria-label="Search items"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+  </nav>
+
+  <!-- ── FEATURED HERO ── -->
   <section class="index-hero" aria-labelledby="featured-title">
     <div class="index-hero-bg"   aria-hidden="true" role="presentation"></div>
     <div id="hero-shader-mount"  aria-hidden="true" role="presentation"></div>
@@ -767,36 +901,15 @@
     </div>
   </section>
 
-  <!-- ── FILTER NAV ──
-       Role: toolbar with mutually exclusive toggle buttons
-       aria-pressed used per ARIA APG toggle button pattern
-       Only one button is pressed=true at a time (exclusive selection)
-  -->
-  <nav class="filter-nav" aria-label="Filter items by category">
-    <button class="filter-btn" data-filter="all"      aria-pressed="true">All</button>
-    <span class="filter-sep" aria-hidden="true">·</span>
-    <button class="filter-btn" data-filter="music"    aria-pressed="false">Music</button>
-    <span class="filter-sep" aria-hidden="true">·</span>
-    <button class="filter-btn" data-filter="travel"   aria-pressed="false">Travel</button>
-    <span class="filter-sep" aria-hidden="true">·</span>
-    <button class="filter-btn" data-filter="books"    aria-pressed="false">Books</button>
-    <span class="filter-sep" aria-hidden="true">·</span>
-    <button class="filter-btn" data-filter="products" aria-pressed="false">Objects</button>
-    <span class="filter-sep" aria-hidden="true">·</span>
-    <button class="filter-btn" data-filter="style"    aria-pressed="false">Style</button>
-    <span class="filter-sep" aria-hidden="true">·</span>
-    <button class="filter-btn" data-filter="food"     aria-pressed="false">Food</button>
-  </nav>
-
   <!-- ── GRID ── -->
   <main id="main-content" class="grid-container">
     <div class="masonry-grid">
 
       <!-- 1. Music — Coltrane & Ellington -->
       <article class="card" data-category="music">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=coltrane" tabindex="-1" aria-hidden="true">
           <img src="img/0225/record.jpg" alt="" style="height:220px;">
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-music">Music</span>
           <h2 class="card-title"><a href="detail.html?item=coltrane" class="card-link-title">In a Sentimental Mood<br><em>Coltrane & Ellington</em></a></h2>
@@ -808,9 +921,9 @@
 
       <!-- 2. Travel — Kyoto -->
       <article class="card" data-category="travel">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=kyoto" tabindex="-1" aria-hidden="true">
           <img src="img/0225/temple.jpg" alt="" style="height:250px;">
-        </div>
+        </a>
         <div class="card-body card-warm">
           <span class="card-category cat-travel">Travel</span>
           <h2 class="card-title"><a href="detail.html?item=kyoto" class="card-link-title">Kyoto<br><em>in November</em></a></h2>
@@ -822,9 +935,9 @@
 
       <!-- 3. Books — Dept. of Speculation -->
       <article class="card card-deep" data-category="books">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=dept-speculation" tabindex="-1" aria-hidden="true">
           <img src="img/0225/paperback.jpg" alt="" style="height:220px;">
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-books">Books</span>
           <h2 class="card-title"><a href="detail.html?item=dept-speculation" class="card-link-title">Dept. of<br><em>Speculation</em></a></h2>
@@ -836,9 +949,9 @@
 
       <!-- 4. Object — Aesop -->
       <article class="card" data-category="products">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=aesop" tabindex="-1" aria-hidden="true">
           <img src="img/0225/aesop.jpg" alt="" style="height:190px;">
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-products">Object</span>
           <h2 class="card-title"><a href="detail.html?item=aesop" class="card-link-title"><em>Aesop</em><br>Resurrection Balm</a></h2>
@@ -850,9 +963,9 @@
 
       <!-- 5. Music — Nick Drake -->
       <article class="card" data-category="music">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=nick-drake" tabindex="-1" aria-hidden="true">
           <img src="img/0225/guitar.jpg" alt="" style="height:200px;">
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-music">Music</span>
           <h2 class="card-title"><a href="detail.html?item=nick-drake" class="card-link-title">Pink Moon<br><em>Nick Drake</em></a></h2>
@@ -864,9 +977,9 @@
 
       <!-- 6. Travel — Lisbon -->
       <article class="card" data-category="travel">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=lisbon" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-food" style="height:230px"></div>
-        </div>
+        </a>
         <div class="card-body card-warm">
           <span class="card-category cat-travel">Travel</span>
           <h2 class="card-title"><a href="detail.html?item=lisbon" class="card-link-title">Lisbon<br><em>Alfama</em></a></h2>
@@ -894,9 +1007,9 @@
 
       <!-- 8. Style — Cashmere -->
       <article class="card" data-category="style">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=cashmere" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-style-light" style="height:200px"></div>
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-style">Style</span>
           <h2 class="card-title"><a href="detail.html?item=cashmere" class="card-link-title">Baby Cashmere<br><em>Crewneck</em></a></h2>
@@ -908,9 +1021,9 @@
 
       <!-- 9. Music — Sufjan Stevens -->
       <article class="card" data-category="music">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=sufjan" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-music-2" style="height:200px"></div>
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-music">Music</span>
           <h2 class="card-title"><a href="detail.html?item=sufjan" class="card-link-title">Carrie & Lowell<br><em>Sufjan Stevens</em></a></h2>
@@ -933,9 +1046,9 @@
 
       <!-- 11. Books — The Rings of Saturn -->
       <article class="card" data-category="books">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=rings-saturn" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-books" style="height:220px"></div>
-        </div>
+        </a>
         <div class="card-body card-warm">
           <span class="card-category cat-books">Books</span>
           <h2 class="card-title"><a href="detail.html?item=rings-saturn" class="card-link-title">The Rings of<br><em>Saturn</em></a></h2>
@@ -958,9 +1071,9 @@
 
       <!-- 13. Travel — Ligurian Coast -->
       <article class="card" data-category="travel">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=ligurian-coast" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-travel-blue" style="height:240px"></div>
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-travel">Travel</span>
           <h2 class="card-title"><a href="detail.html?item=ligurian-coast" class="card-link-title">Ligurian Coast<br><em>May, not August</em></a></h2>
@@ -972,9 +1085,9 @@
 
       <!-- 14. Object — Field Notes -->
       <article class="card" data-category="products">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=field-notes" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-food" style="height:190px"></div>
-        </div>
+        </a>
         <div class="card-body card-warm">
           <span class="card-category cat-products">Object</span>
           <h2 class="card-title"><a href="detail.html?item=field-notes" class="card-link-title"><em>Field Notes</em><br>Kraft Notebooks</a></h2>
@@ -997,9 +1110,9 @@
 
       <!-- 16. Food — Miso Butter -->
       <article class="card" data-category="food">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=miso-butter-onions" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-food" style="height:210px"></div>
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-food">Food</span>
           <h2 class="card-title"><a href="detail.html?item=miso-butter-onions" class="card-link-title">Miso Butter<br><em>Caramelised Onions</em></a></h2>
@@ -1011,9 +1124,9 @@
 
       <!-- 17. Style — The White Shirt -->
       <article class="card" data-category="style">
-        <div class="card-visual" aria-hidden="true">
+        <a class="card-visual" href="detail.html?item=white-shirt" tabindex="-1" aria-hidden="true">
           <div class="visual-swatch visual-style-dark" style="height:220px"></div>
-        </div>
+        </a>
         <div class="card-body">
           <span class="card-category cat-style">Style</span>
           <h2 class="card-title"><a href="detail.html?item=white-shirt" class="card-link-title">The White<br><em>Shirt</em></a></h2>
@@ -1072,39 +1185,119 @@
 
   <script>
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.card[data-category]');
-    const statusEl = document.getElementById('filter-status');
+    const cards      = document.querySelectorAll('.card[data-category]');
+    const statusEl   = document.getElementById('filter-status');
+    const searchInput = document.querySelector('.search-input');
 
+    /* ── Share icon SVG ── */
+    const shareIconSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`;
+
+    /* ── Inject share buttons into every card ── */
+    cards.forEach(card => {
+      const body = card.querySelector('.card-body');
+      if (!body) return;
+
+      // Wrap existing date in footer div alongside share button
+      const dateEl = body.querySelector('.card-date');
+      const footer = document.createElement('div');
+      footer.className = 'card-footer';
+
+      const shareBtn = document.createElement('button');
+      shareBtn.className = 'card-share';
+      shareBtn.setAttribute('aria-label', 'Share this item');
+      shareBtn.innerHTML = shareIconSVG + '<span class="card-share-label">Share</span>';
+
+      if (dateEl) {
+        dateEl.parentNode.insertBefore(footer, dateEl);
+        footer.appendChild(dateEl);
+      }
+      footer.appendChild(shareBtn);
+    });
+
+    /* ── Share button handler ── */
+    document.addEventListener('click', async e => {
+      const btn = e.target.closest('.card-share');
+      if (!btn) return;
+
+      const card  = btn.closest('article');
+      const href  = card.querySelector('a.card-visual, .card-link-title, .quote-read-link')?.getAttribute('href') || '';
+      const url   = href ? new URL(href, location.href).href : location.href;
+      const title = card.querySelector('.card-title')?.textContent.trim() || 'Things I Keep';
+      const label = btn.querySelector('.card-share-label');
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, url });
+        } else {
+          await navigator.clipboard.writeText(url);
+          btn.classList.add('copied');
+          label.textContent = 'Copied';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            label.textContent = 'Share';
+          }, 2000);
+        }
+      } catch (_) { /* user cancelled share */ }
+    });
+
+    /* ── Combined filter + search ── */
+    function applyFilters() {
+      const activeFilter = document.querySelector('.filter-btn[aria-pressed="true"]').dataset.filter;
+      const query = (searchInput.value || '').toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const matchesFilter = activeFilter === 'all' || card.dataset.category === activeFilter;
+        const text = (card.querySelector('.card-title')?.textContent || '') +
+                     (card.querySelector('.card-note')?.textContent  || '') +
+                     (card.querySelector('.card-quote-text')?.textContent || '');
+        const matchesSearch = !query || text.toLowerCase().includes(query);
+
+        if (matchesFilter && matchesSearch) {
+          card.removeAttribute('data-hidden');
+          card.classList.remove('animate-in');
+          void card.offsetWidth;
+          card.classList.add('animate-in');
+          visibleCount++;
+        } else {
+          card.setAttribute('data-hidden', '');
+        }
+      });
+
+      // Screen reader announcement
+      const noun = visibleCount === 1 ? 'item' : 'items';
+      statusEl.textContent = query
+        ? `${visibleCount} ${noun} matching "${searchInput.value.trim()}".`
+        : activeFilter === 'all'
+          ? `Showing all ${visibleCount} ${noun}.`
+          : `Showing ${visibleCount} ${activeFilter} ${noun}.`;
+
+      // No-results message
+      let noResults = document.querySelector('.no-results');
+      if (!noResults) {
+        noResults = document.createElement('p');
+        noResults.className = 'no-results';
+        noResults.textContent = 'Nothing found.';
+        document.querySelector('.masonry-grid').appendChild(noResults);
+      }
+      noResults.classList.toggle('visible', visibleCount === 0);
+    }
+
+    /* ── Filter buttons ── */
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        // Update aria-pressed: only clicked button is true (WCAG 4.1.2)
         filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
         btn.setAttribute('aria-pressed', 'true');
-
-        const filter = btn.dataset.filter;
-        let visibleCount = 0;
-
-        cards.forEach(card => {
-          const show = filter === 'all' || card.dataset.category === filter;
-          if (show) {
-            card.removeAttribute('data-hidden');
-            card.classList.remove('animate-in');
-            void card.offsetWidth; // reflow to restart animation
-            card.classList.add('animate-in');
-            visibleCount++;
-          } else {
-            card.setAttribute('data-hidden', '');
-          }
-        });
-
-        // Announce result to screen readers (WCAG 4.1.3)
-        const label = btn.textContent.trim().toLowerCase();
-        const noun  = visibleCount === 1 ? 'item' : 'items';
-        statusEl.textContent =
-          filter === 'all'
-            ? `Showing all ${visibleCount} ${noun}.`
-            : `Showing ${visibleCount} ${label} ${noun}.`;
+        applyFilters();
       });
+    });
+
+    /* ── Search input ── */
+    searchInput.addEventListener('input', applyFilters);
+
+    /* ── Clear search on Escape ── */
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { searchInput.value = ''; applyFilters(); }
     });
   </script>
 
