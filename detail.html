@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Things I Keep</title>
+  <title>The Kept List</title>
   <meta name="description" content="Music, places, objects, books — the things that stayed.">
   <meta property="og:type"        content="article">
   <meta property="og:site_name"   content="The Kept List">
-  <meta property="og:title"       content="Things I Keep">
+  <meta property="og:title"       content="The Kept List">
   <meta property="og:description" content="Music, places, objects, books — the things that stayed.">
   <meta property="og:url"         content="https://thekeptlist.com">
   <meta name="twitter:card"       content="summary">
-  <meta name="twitter:title"      content="Things I Keep">
+  <meta name="twitter:title"      content="The Kept List">
   <meta name="twitter:description" content="Music, places, objects, books — the things that stayed.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -625,7 +625,7 @@
   <nav class="page-nav" aria-label="Site navigation">
     <a href="/" class="back-link">
       <span class="back-link-arrow" aria-hidden="true">←</span>
-      <span>Things I Keep</span>
+      <span>The Kept List</span>
     </a>
     <span class="nav-site" aria-hidden="true">a personal curation</span>
     <button class="page-share" aria-label="Share this page">
@@ -1391,11 +1391,11 @@
   }
 
   if (!item) {
-    document.title = 'Not found — Things I Keep';
+    document.title = 'Not found — The Kept List';
     render.innerHTML = `
       <div class="not-found" role="alert">
         <p>This item wasn't found.</p>
-        <a href="/">← Back to Things I Keep</a>
+        <a href="/">← Back to The Kept List</a>
       </div>`;
   } else {
     const pageUrl = `https://thekeptlist.com/detail.html?item=${id}`;
@@ -1415,7 +1415,7 @@
   const shareLabel = shareBtn?.querySelector('.page-share-label');
   shareBtn?.addEventListener('click', async () => {
     const url   = location.href;
-    const title = item ? `${item.title} — Things I Keep` : 'Things I Keep';
+    const title = item ? `${item.title} — The Kept List` : 'The Kept List';
     try {
       if (navigator.share) {
         await navigator.share({ title, url });

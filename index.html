@@ -855,7 +855,7 @@
   <header class="site-header">
     <!-- Eyebrow: informational, contrast-verified -->
     <span class="site-eyebrow">a personal curation</span>
-    <h1 class="site-title">Things I <em>Keep</em></h1>
+    <h1 class="site-title">The Kept <em>List</em></h1>
     <p class="site-desc">Music, places, objects, books — the things that stayed.</p>
     <!-- Decorative ornament -->
     <div class="header-ornament" aria-hidden="true" role="presentation">
@@ -1232,7 +1232,7 @@
       const card  = btn.closest('article');
       const href  = card.querySelector('a.card-visual, .card-link-title, .quote-read-link')?.getAttribute('href') || '';
       const url   = href ? new URL(href, location.href).href : location.href;
-      const title = card.querySelector('.card-title')?.textContent.trim() || 'Things I Keep';
+      const title = card.querySelector('.card-title')?.textContent.trim() || 'The Kept List';
       const label = btn.querySelector('.card-share-label');
 
       try {
