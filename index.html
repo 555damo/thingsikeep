@@ -314,6 +314,8 @@
       transform: scaleX(1);
     }
 
+    .filter-btn:active { color: var(--cat-terra); }
+
     .filter-btn:focus-visible {
       outline: 2px solid var(--cat-terra);
       outline-offset: 3px;
@@ -342,6 +344,7 @@
       white-space: nowrap;
     }
     .nav-contact-link:hover { color: var(--ink); }
+    .nav-contact-link:active { color: var(--cat-terra); }
     .nav-contact-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
 
     /* ───── GRID ───── */
@@ -603,6 +606,7 @@
       text-decoration-color: var(--sand);
       text-underline-offset: 4px;
     }
+    .card-link-title:active { opacity: 0.7; }
     .card-link-title:focus-visible {
       outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 1px;
     }
@@ -617,6 +621,7 @@
       transition: color 0.2s ease, border-color 0.2s ease;
     }
     .quote-read-link:hover { color: var(--ink); border-color: var(--ink); }
+    .quote-read-link:active { opacity: 0.7; }
     .quote-read-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; }
 
     /* Filter hide — uses aria-hidden + display:none combo */
@@ -625,7 +630,7 @@
     /* ───── INDEX HERO ───── */
     .index-hero {
       position: relative;
-      height: clamp(460px, 72vh, 700px);
+      height: clamp(260px, 38vh, 380px);
       overflow: hidden;
       display: flex;
       align-items: flex-end;
@@ -678,13 +683,13 @@
 
     .index-hero-content {
       position: relative;
-      padding-bottom: clamp(52px, 8vh, 88px);
+      padding-bottom: clamp(28px, 4vh, 44px);
       max-width: 600px;
     }
 
     .hero-badge {
       font-family: 'DM Sans', sans-serif;
-      font-size: 9px;
+      font-size: 10px;
       letter-spacing: 0.34em;
       text-transform: uppercase;
       color: var(--terracotta);
@@ -707,13 +712,14 @@
       font-size: 10.5px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(240,234,224,0.48);
+      /* raised from 0.48 → 0.65 for WCAG 4.5:1 on dark hero bg */
+      color: rgba(240,234,224,0.65);
       margin-bottom: 12px;
     }
 
     .hero-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(30px, 4.5vw, 58px);
+      font-size: clamp(22px, 2.8vw, 38px);
       font-weight: 300;
       font-style: italic;
       line-height: 0.91;
@@ -727,7 +733,8 @@
       font-size: 9.5px;
       letter-spacing: 0.20em;
       text-transform: uppercase;
-      color: rgba(240,234,224,0.33);
+      /* raised from 0.33 → 0.65 for WCAG 4.5:1 on dark hero bg */
+      color: rgba(240,234,224,0.65);
       margin-bottom: 38px;
     }
 
@@ -750,6 +757,7 @@
       border-color: rgba(240,234,224,0.50);
       background: rgba(240,234,224,0.07);
     }
+    .hero-cta:active { transform: translateY(1px); opacity: 0.85; }
     .hero-cta:focus-visible {
       outline: 2px solid var(--terracotta);
       outline-offset: 4px;
@@ -831,6 +839,7 @@
       flex-shrink: 0;
     }
     .card-share:hover { color: var(--terracotta); }
+    .card-share:active { opacity: 0.65; }
     .card-share:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
     .card-share-label {
       font-family: 'DM Sans', sans-serif;

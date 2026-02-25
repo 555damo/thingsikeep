@@ -105,6 +105,7 @@
       transition: color 0.2s ease;
     }
     .back-link:hover { color: var(--ink); }
+    .back-link:active { color: var(--cat-terra); }
     .back-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
     .back-link-arrow { font-size: 14px; }
 
@@ -220,7 +221,8 @@
 
     .form-input::placeholder,
     .form-textarea::placeholder {
-      color: var(--parchment-deep);
+      /* #5E5248 on #F0EAE0 = 5.8:1 ✓ (was --parchment-deep = 1.31:1 ✗) */
+      color: var(--text-muted);
     }
 
     .form-input:focus,
@@ -279,6 +281,16 @@
     }
     .form-submit:active {
       transform: translateY(1px);
+    }
+    .form-submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      border-color: var(--parchment-deep);
+    }
+    .form-submit:disabled:hover {
+      background: transparent;
+      color: var(--ink);
+      border-color: var(--parchment-deep);
     }
 
     /* ── Success state ── */
@@ -445,6 +457,7 @@
       const btn = this.querySelector('.form-submit');
       btn.textContent = 'Sending…';
       btn.disabled = true;
+      btn.setAttribute('aria-busy', 'true');
 
       try {
         const res = await fetch(this.action, {
@@ -454,15 +467,18 @@
         });
 
         if (res.ok) {
+          btn.setAttribute('aria-busy', 'false');
           this.style.display = 'none';
           document.getElementById('form-success').classList.add('visible');
         } else {
           btn.textContent = 'Something went wrong — try again';
           btn.disabled = false;
+          btn.setAttribute('aria-busy', 'false');
         }
       } catch (_) {
         btn.textContent = 'Something went wrong — try again';
         btn.disabled = false;
+        btn.setAttribute('aria-busy', 'false');
       }
     });
   </script>
