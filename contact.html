@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — The Kept List</title>
+  <link rel="canonical" href="https://thekeptlist.com/contact">
+  <meta name="description" content="Reach out to The Kept List — collaborations, questions, or just to say hello.">
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="The Kept List">
+  <meta property="og:title"       content="Contact — The Kept List">
+  <meta property="og:description" content="Reach out to The Kept List — collaborations, questions, or just to say hello.">
+  <meta property="og:url"         content="https://thekeptlist.com/contact">
+  <meta name="twitter:card"       content="summary">
+  <meta name="twitter:title"      content="Contact — The Kept List">
+  <meta name="twitter:description" content="Reach out to The Kept List — collaborations, questions, or just to say hello.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream:          #F0EAE0;
+      --parchment:      #E6DDD0;
+      --parchment-deep: #D8CDB9;
+      --terracotta:       #B8724E;
+      --terracotta-light: #E8CDB8;
+      --sand:             #C8B9A2;
+      --ink:        #1C1814;
+      --text-body:  #3E3630;
+      --text-muted: #5E5248;
+      --cat-terra:  #7A3E22;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      mix-blend-mode: multiply;
+    }
+
+    /* Ambient glow */
+    .page-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 65% 50% at 12% 10%, rgba(196, 150, 80, 0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 45% at 88% 80%, rgba(184, 114, 78, 0.05) 0%, transparent 55%);
+    }
+
+    /* ── Screen-reader utility ── */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* ── Skip link ── */
+    .skip-link {
+      position: absolute; top: -100%; left: 16px; z-index: 10000;
+      padding: 8px 16px; background: var(--ink); color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      letter-spacing: 0.05em; text-decoration: none;
+      border-radius: 0 0 4px 4px;
+    }
+    .skip-link:focus { top: 0; outline: 2px solid var(--terracotta); outline-offset: 2px; }
+
+    /* ── Sticky nav ── */
+    .page-nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(240, 234, 224, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sand);
+    }
+
+    .back-link {
+      font-family: 'DM Sans', sans-serif; font-size: 10.5px;
+      font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover { color: var(--ink); }
+    .back-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
+    .back-link-arrow { font-size: 14px; }
+
+    .nav-site {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; font-style: italic; color: var(--text-muted);
+    }
+
+    /* ── Page content ── */
+    .contact-wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 72px 32px 96px;
+    }
+
+    /* Eyebrow */
+    .contact-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    /* Heading */
+    .contact-heading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    /* Subhead */
+    .contact-subhead {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 19px;
+      font-weight: 400;
+      color: var(--text-body);
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    /* Ornament */
+    .contact-ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .contact-ornament-line { width: 36px; height: 1px; background: var(--sand); }
+    .contact-ornament-dot  { width: 3px; height: 3px; border-radius: 50%; background: var(--terracotta); opacity: 0.6; }
+
+    /* Body text */
+    .contact-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--text-body);
+      margin-bottom: 14px;
+    }
+
+    .contact-body + .contact-body { margin-bottom: 52px; }
+
+    /* ── Form ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .form-field {
+      position: relative;
+      margin-bottom: 36px;
+    }
+
+    .form-label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--sand);
+      padding: 0 0 12px;
+      outline: none;
+      border-radius: 0;
+      transition: border-color 0.22s ease;
+      -webkit-appearance: none;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--parchment-deep);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-bottom-color: var(--terracotta);
+    }
+
+    .form-textarea {
+      resize: none;
+      height: 110px;
+      line-height: 1.75;
+    }
+
+    /* Animated underline on focus */
+    .form-field::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--terracotta);
+      transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    .form-field:focus-within::after { width: 100%; }
+
+    /* Submit button */
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      align-self: flex-start;
+      margin-top: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: none;
+      border: 1px solid var(--sand);
+      padding: 14px 28px;
+      cursor: pointer;
+      transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .form-submit:hover {
+      border-color: var(--terracotta);
+      background: rgba(184, 114, 78, 0.06);
+      color: var(--cat-terra);
+    }
+    .form-submit:focus-visible {
+      outline: 2px solid var(--cat-terra);
+      outline-offset: 4px;
+    }
+    .form-submit:active {
+      transform: translateY(1px);
+    }
+
+    /* ── Success state ── */
+    .form-success {
+      display: none;
+      padding: 32px 0 0;
+    }
+    .form-success.visible { display: block; }
+
+    .form-success-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .form-success-note {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center;
+      padding: 32px 24px 56px;
+      border-top: 1px solid var(--parchment-deep);
+      position: relative;
+      z-index: 1;
+    }
+    .footer-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* ── Reduced motion ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <div class="page-glow" aria-hidden="true"></div>
+
+  <!-- Decorative top rule -->
+  <div aria-hidden="true" role="presentation"
+    style="height:3px; background: linear-gradient(90deg, var(--cream) 0%, var(--terracotta) 30%, var(--sand) 70%, var(--cream) 100%);">
+  </div>
+
+  <!-- ── NAV ── -->
+  <nav class="page-nav" aria-label="Site navigation">
+    <a href="index.html" class="back-link">
+      <span class="back-link-arrow" aria-hidden="true">←</span>
+      The Kept List
+    </a>
+    <span class="nav-site" aria-current="page">Contact</span>
+  </nav>
+
+  <!-- ── MAIN ── -->
+  <main id="main-content" class="contact-wrap">
+
+    <span class="contact-eyebrow">Get in touch</span>
+
+    <h1 class="contact-heading">Say hello&hellip;</h1>
+
+    <p class="contact-subhead">The Kept List welcomes thoughtful correspondence.</p>
+
+    <div class="contact-ornament" aria-hidden="true">
+      <span class="contact-ornament-line"></span>
+      <span class="contact-ornament-dot"></span>
+      <span class="contact-ornament-line"></span>
+    </div>
+
+    <p class="contact-body">
+      If you feel something is worth keeping&mdash;a place, a person, a collaboration, an idea&mdash;you are invited to reach out.
+    </p>
+
+    <p class="contact-body">
+      I welcome messages about collaborations, questions, feedback, or simply to say hello. Every note is read with care.
+    </p>
+
+    <!-- ── FORM ── -->
+    <form
+      class="contact-form"
+      id="contact-form"
+      action="https://formspree.io/f/mbdawrvg"
+      method="POST"
+    >
+      <div class="form-field">
+        <label class="form-label" for="field-name">Name</label>
+        <input
+          class="form-input"
+          id="field-name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          placeholder="Your name"
+          required
+        >
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="field-email">Email</label>
+        <input
+          class="form-input"
+          id="field-email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="your@email.com"
+          required
+        >
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="field-message">Message</label>
+        <textarea
+          class="form-textarea"
+          id="field-message"
+          name="message"
+          placeholder="What's on your mind?"
+          required
+        ></textarea>
+      </div>
+
+      <button class="form-submit" type="submit">
+        Send a note <span aria-hidden="true">→</span>
+      </button>
+    </form>
+
+    <div class="form-success" id="form-success" role="alert" aria-live="polite">
+      <p class="form-success-heading">Thank you.</p>
+      <p class="form-success-note">Your message was received. I'll be in touch within 48 hours.</p>
+    </div>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <p class="footer-text">Updated as things are found, kept, or remembered.</p>
+  </footer>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const name    = document.getElementById('field-name').value.trim();
+      const email   = document.getElementById('field-email').value.trim();
+      const message = document.getElementById('field-message').value.trim();
+      if (!name || !email || !message) return;
+
+      const btn = this.querySelector('.form-submit');
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(this.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(this),
+        });
+
+        if (res.ok) {
+          this.style.display = 'none';
+          document.getElementById('form-success').classList.add('visible');
+        } else {
+          btn.textContent = 'Something went wrong — try again';
+          btn.disabled = false;
+        }
+      } catch (_) {
+        btn.textContent = 'Something went wrong — try again';
+        btn.disabled = false;
+      }
+    });
+  </script>
+
+</body>
+</html>
