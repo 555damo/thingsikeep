@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide — The Kept List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:          #F0EAE0;
+      --parchment:      #E6DDD0;
+      --parchment-deep: #D8CDB9;
+      --ink:            #1C1814;
+      --text-body:      #3E3630;
+      --text-muted:     #5E5248;
+      --terra:          #B8724E;
+      --terra-dark:     #7A3E22;
+      --sand:           #C8B9A2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text-body);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+    }
+    .topbar-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+    }
+    .topbar-title span {
+      font-style: normal;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-left: 12px;
+    }
+    .topbar-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.6;
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 8px 16px;
+      border-radius: 2px;
+      transition: opacity 0.2s ease;
+    }
+    .topbar-link:hover { opacity: 1; }
+
+    /* ── Page layout ── */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 100px;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      margin-bottom: 52px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--parchment-deep);
+    }
+    .page-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--terra-dark);
+      margin-bottom: 14px;
+    }
+    .page-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(32px, 5vw, 46px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .page-intro {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 52px;
+    }
+    .section-number {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--terra);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    /* ── Subsections ── */
+    h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 28px 0 12px;
+    }
+
+    p { margin-bottom: 14px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Ordered / unordered lists ── */
+    ol, ul {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    li { margin-bottom: 6px; }
+    li:last-child { margin-bottom: 0; }
+    ul { list-style: none; padding-left: 0; }
+    ul li { padding-left: 16px; position: relative; }
+    ul li::before {
+      content: '—';
+      position: absolute; left: 0;
+      color: var(--sand);
+    }
+
+    strong { font-weight: 500; color: var(--ink); }
+    em { font-style: italic; color: var(--text-muted); }
+
+    /* ── Inline code / paths ── */
+    code {
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 12px;
+      background: var(--parchment);
+      border: 1px solid var(--parchment-deep);
+      border-radius: 2px;
+      padding: 1px 6px;
+      color: var(--terra-dark);
+    }
+
+    /* ── Callout box ── */
+    .callout {
+      background: var(--parchment);
+      border-left: 3px solid var(--terra);
+      border-radius: 0 2px 2px 0;
+      padding: 18px 20px;
+      margin: 20px 0;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .callout p { margin-bottom: 8px; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ── System prompt copy block ── */
+    .prompt-block {
+      background: var(--ink);
+      color: rgba(240,234,224,0.85);
+      border-radius: 3px;
+      padding: 22px 24px;
+      margin: 20px 0;
+      font-size: 13px;
+      line-height: 1.8;
+      position: relative;
+    }
+    .prompt-block em { color: rgba(240,234,224,0.55); font-style: normal; }
+    .copy-btn {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(240,234,224,0.7);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.18); color: var(--cream); }
+    .copy-btn.copied { color: #8EC48E; border-color: #8EC48E; }
+
+    /* ── Quick reference table ── */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .ref-table th {
+      text-align: left;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 400;
+      padding: 0 12px 10px 0;
+      border-bottom: 1px solid var(--parchment-deep);
+    }
+    .ref-table td {
+      padding: 12px 12px 12px 0;
+      border-bottom: 1px solid var(--parchment);
+      vertical-align: top;
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table a {
+      color: var(--terra-dark);
+      text-decoration: none;
+    }
+    .ref-table a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--parchment-deep);
+      margin: 48px 0;
+    }
+
+    /* ── Link style ── */
+    a { color: var(--terra-dark); }
+    a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Step list (numbered, styled) ── */
+    .step-list { list-style: none; padding: 0; counter-reset: step; }
+    .step-list li {
+      counter-increment: step;
+      display: flex; gap: 14px;
+      margin-bottom: 10px;
+      padding-left: 0;
+    }
+    .step-list li::before {
+      content: counter(step);
+      min-width: 24px; height: 24px;
+      background: var(--parchment);
+      border: 1px solid var(--sand);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--terra-dark);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-title">The Kept List <span>Guide</span></div>
+  <a href="admin.html" class="topbar-link">← Back to admin</a>
+</header>
+
+<main class="page">
+
+  <div class="page-header">
+    <p class="page-eyebrow">The Kept List</p>
+    <h1 class="page-title">How to update<br>the site</h1>
+    <p class="page-intro">Two things you can do: edit posts directly, or ask Claude to change the design. Both are covered below — no technical knowledge needed.</p>
+  </div>
+
+  <!-- Section 1 -->
+  <section class="section">
+    <p class="section-number">01</p>
+    <h2 class="section-title">Adding &amp; editing posts</h2>
+
+    <p>Go to <a href="admin.html"><strong>thekeptlist.com/admin.html</strong></a>. You'll need the GitHub token Damiano gave you — paste it into the token field once and click Save. It stays saved in your browser from then on.</p>
+
+    <h3>Adding a new post</h3>
+    <ol class="step-list">
+      <li>Click <strong>+ Add post</strong> in the top right</li>
+      <li>Fill in the form (see field guide below)</li>
+      <li>Click <strong>Save &amp; publish</strong></li>
+    </ol>
+    <p>The site updates in about <strong>one minute</strong>.</p>
+
+    <div class="callout">
+      <p><strong>Field guide</strong></p>
+      <p><strong>Date</strong> — when you're adding it (today's date is fine)</p>
+      <p><strong>Category</strong> — Music, Travel, Books, Object, Style, or Food</p>
+      <p><strong>Card type:</strong></p>
+      <ul>
+        <li><em>Text only</em> — just words, no image. Most common.</li>
+        <li><em>Colour swatch + text</em> — a decorative coloured block above the text</li>
+        <li><em>Photo + text</em> — a real photo above the text (see photo instructions below)</li>
+        <li><em>Pull quote</em> — a single line in italic, good for a memorable quote from a book</li>
+      </ul>
+      <p><strong>Background tone</strong> — Default is fine. Deep is slightly darker.</p>
+      <p><strong>Title line 1</strong> — the main title</p>
+      <p><strong>Title line 2</strong> — a subtitle, artist name, or place name (shown in italic)</p>
+      <p><strong>Body text</strong> — 2–4 sentences about why this is on the list</p>
+      <p><strong>External link</strong> — a shop or website to link to (optional)</p>
+    </div>
+
+    <h3>Editing a post</h3>
+    <p>Click <strong>Edit</strong> next to any post in the list. Change what you like, then click <strong>Save &amp; publish</strong>.</p>
+
+    <h3>Deleting a post</h3>
+    <p>Click <strong>Edit</strong> on the post, then the red <strong>Delete post</strong> button at the bottom of the form.</p>
+
+    <h3>Adding a photo to a post</h3>
+    <ol class="step-list">
+      <li>Go to <a href="https://github.com/555damo/thekeptlist" target="_blank" rel="noopener"><strong>github.com/555damo/thekeptlist</strong></a></li>
+      <li>Open the <code>img/</code> folder</li>
+      <li>Click <strong>Add file → Upload files</strong> and upload your photo</li>
+      <li>Back in the admin, choose <strong>Photo + text</strong> as the card type</li>
+      <li>In the <strong>Image path</strong> field, type: <code>img/your-filename.jpg</code></li>
+    </ol>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 2 -->
+  <section class="section">
+    <p class="section-number">02</p>
+    <h2 class="section-title">Changing the design</h2>
+
+    <p>For changing how the site <em>looks</em> — colours, fonts, layout, spacing — use Claude. You describe what you want in plain English, Claude gives you the code, and you paste it into GitHub.</p>
+
+    <h3>One-time setup: Claude.ai Project</h3>
+    <ol class="step-list">
+      <li>Go to <a href="https://claude.ai" target="_blank" rel="noopener"><strong>claude.ai</strong></a> and sign in</li>
+      <li>Click <strong>Projects</strong> in the left sidebar → <strong>New project</strong></li>
+      <li>Name it: <em>The Kept List</em></li>
+      <li>Click <strong>Project instructions</strong> and paste the text below</li>
+      <li>Click <strong>Add content → Files</strong> and upload <code>index.html</code>, <code>detail.html</code>, and <code>contact.html</code> — ask Damiano to send you these, or download them from <a href="https://github.com/555damo/thekeptlist" target="_blank" rel="noopener">github.com/555damo/thekeptlist</a></li>
+    </ol>
+
+    <div class="prompt-block" id="system-prompt">
+      <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+      You are helping manage The Kept List (thekeptlist.com), a personal curation site. The site is a single HTML file called index.html, plus detail.html for long-form posts and contact.html.<br><br>
+      When asked to make a design change:<br>
+      1. Identify the exact CSS or HTML section to change<br>
+      2. Show only the changed lines or block — not the whole file — unless the change is small enough to show in full<br>
+      3. Explain in plain English what to do with the code<br>
+      4. After showing the code, remind me to go to github.com/555damo/thekeptlist, navigate to the file, click the pencil icon to edit, paste in the changes, and click Commit changes<br><br>
+      Keep the existing design — terracotta accent, Cormorant Garamond serif for headings, DM Sans for body, parchment/cream backgrounds. Do not suggest new sections or features unless asked.
+    </div>
+
+    <h3>Making a design change</h3>
+    <p>Just describe what you want. For example:</p>
+    <ul>
+      <li><em>"Make the site title slightly smaller"</em></li>
+      <li><em>"Change the terracotta colour to a dusty rose"</em></li>
+      <li><em>"Make the body text a bit bigger and easier to read"</em></li>
+      <li><em>"Add more space between the cards"</em></li>
+    </ul>
+
+    <p>Claude will show you the code to change. Then:</p>
+    <ol class="step-list">
+      <li>Go to <a href="https://github.com/555damo/thekeptlist" target="_blank" rel="noopener">github.com/555damo/thekeptlist</a></li>
+      <li>Click the file (usually <code>index.html</code>)</li>
+      <li>Click the <strong>pencil icon</strong> to edit</li>
+      <li>Find the section Claude highlighted and paste in the change</li>
+      <li>Click the green <strong>Commit changes</strong> button</li>
+    </ol>
+    <p>The site updates in about one minute.</p>
+
+    <div class="callout">
+      <p><strong>Tips</strong></p>
+      <p>If Claude's response is confusing: <em>"Can you explain that more simply?"</em> or <em>"Show me exactly what to copy and paste."</em></p>
+      <p>If a change doesn't look right, take a screenshot and paste it into the chat: <em>"This doesn't look right — can you fix it?"</em></p>
+      <p>You don't need to understand the code. Just copy and paste what Claude gives you.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Quick reference -->
+  <section class="section">
+    <h2 class="section-title">Quick reference</h2>
+    <table class="ref-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Where</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Add / edit / delete posts</td>
+          <td><a href="admin.html">thekeptlist.com/admin.html</a></td>
+        </tr>
+        <tr>
+          <td>Change the design</td>
+          <td><a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> → The Kept List project</td>
+        </tr>
+        <tr>
+          <td>Upload photos</td>
+          <td><a href="https://github.com/555damo/thekeptlist/tree/main/img" target="_blank" rel="noopener">github.com/555damo/thekeptlist</a> → img/ folder</td>
+        </tr>
+        <tr>
+          <td>View the live site</td>
+          <td><a href="https://thekeptlist.com" target="_blank" rel="noopener">thekeptlist.com</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script>
+  const PROMPT_TEXT = `You are helping manage The Kept List (thekeptlist.com), a personal curation site. The site is a single HTML file called index.html, plus detail.html for long-form posts and contact.html.
+
+When asked to make a design change:
+1. Identify the exact CSS or HTML section to change
+2. Show only the changed lines or block — not the whole file — unless the change is small enough to show in full
+3. Explain in plain English what to do with the code
+4. After showing the code, remind me to go to github.com/555damo/thekeptlist, navigate to the file, click the pencil icon to edit, paste in the changes, and click Commit changes
+
+Keep the existing design — terracotta accent, Cormorant Garamond serif for headings, DM Sans for body, parchment/cream backgrounds. Do not suggest new sections or features unless asked.`;
+
+  function copyPrompt() {
+    navigator.clipboard.writeText(PROMPT_TEXT).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2500);
+    });
+  }
+</script>
+
+</body>
+</html>
