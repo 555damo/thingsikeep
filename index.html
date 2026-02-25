@@ -643,11 +643,20 @@
         linear-gradient(to right, transparent 55%, rgba(10,7,4,0.28) 100%);
     }
 
-    .index-hero-content {
+    /* Constrains hero content to grid width — mirrors .grid-container */
+    .index-hero-inner {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
       position: relative;
       z-index: 3;
-      padding: 0 clamp(28px, 7vw, 104px) clamp(52px, 8vh, 88px);
-      max-width: 740px;
+      padding: 0 28px;
+    }
+
+    .index-hero-content {
+      position: relative;
+      padding-bottom: clamp(52px, 8vh, 88px);
+      max-width: 600px;
     }
 
     .hero-badge {
@@ -895,14 +904,16 @@
     <div id="hero-shader-mount"  aria-hidden="true" role="presentation"></div>
     <div class="index-hero-scrim" aria-hidden="true" role="presentation"></div>
     <p class="index-hero-label"   aria-hidden="true">No. 001 &mdash; Music</p>
-    <div class="index-hero-content">
-      <p class="hero-badge">Featured</p>
-      <p class="hero-artist">John Coltrane &amp; Duke Ellington</p>
-      <h2 id="featured-title" class="hero-title">In a Sentimental<br>Mood</h2>
-      <p class="hero-meta">1963 &middot; Impulse! Records &middot; 14 min</p>
-      <a href="detail.html?item=coltrane" class="hero-cta">
-        Read more <span aria-hidden="true">→</span>
-      </a>
+    <div class="index-hero-inner">
+      <div class="index-hero-content">
+        <p class="hero-badge">Featured</p>
+        <p class="hero-artist">John Coltrane &amp; Duke Ellington</p>
+        <h2 id="featured-title" class="hero-title">In a Sentimental<br>Mood</h2>
+        <p class="hero-meta">1963 &middot; Impulse! Records &middot; 14 min</p>
+        <a href="detail.html?item=coltrane" class="hero-cta">
+          Read more <span aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -1313,10 +1324,15 @@
     });
 
     /* ── Combined filter + search ── */
+    const heroSection = document.querySelector('.index-hero');
+
     function applyFilters() {
       const activeFilter = document.querySelector('.filter-btn[aria-pressed="true"]').dataset.filter;
       const query = (searchInput.value || '').toLowerCase().trim();
       let visibleCount = 0;
+
+      /* Show hero only on the unfiltered "All" view */
+      heroSection.style.display = (activeFilter === 'all' && !query) ? '' : 'none';
 
       cards.forEach(card => {
         const matchesFilter = activeFilter === 'all' || card.dataset.category === activeFilter;
