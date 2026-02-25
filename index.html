@@ -328,7 +328,30 @@
       user-select: none;
     }
 
-    
+    /* Contact nav link */
+    .nav-contact-link {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10.5px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 8px 0 8px 8px;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+    .nav-contact-link:hover { color: var(--ink); }
+    .nav-contact-link:focus-visible { outline: 2px solid var(--cat-terra); outline-offset: 3px; border-radius: 2px; }
+
+    /* ───── GRID ───── */
+    .grid-container {
+      padding: 0 28px 100px;
+      max-width: 1240px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
 
     .masonry-grid {
       columns: 3;
