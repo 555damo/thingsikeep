@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — The Kept List</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:     #F0EAE0;
+      --parchment: #E6DDD0;
+      --parchment-deep: #D8CDB9;
+      --ink:       #1C1814;
+      --text-body: #3E3630;
+      --text-muted:#5E5248;
+      --terra:     #B8724E;
+      --terra-dark:#7A3E22;
+      --sand:      #C8B9A2;
+      --danger:    #8B2E1A;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--ink);
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      gap: 16px;
+    }
+    .topbar-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+    .topbar-title span {
+      font-style: normal;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-left: 12px;
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      padding: 9px 18px;
+      border-radius: 2px;
+      transition: opacity 0.2s ease, transform 0.15s ease;
+      text-decoration: none;
+    }
+    .btn:active { transform: translateY(1px); opacity: 0.8; }
+    .btn-primary {
+      background: var(--terra);
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-ghost {
+      background: rgba(255,255,255,0.10);
+      color: var(--cream);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-danger:hover { opacity: 0.88; }
+    .btn-sm { padding: 6px 12px; font-size: 10px; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+    /* ── Setup screen ── */
+    .setup-screen {
+      max-width: 520px;
+      margin: 80px auto;
+      padding: 0 24px;
+    }
+    .setup-card {
+      background: var(--parchment);
+      border: 1px solid var(--parchment-deep);
+      padding: 40px;
+      border-radius: 2px;
+    }
+    .setup-card h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+    .setup-card p { color: var(--text-muted); margin-bottom: 28px; font-size: 13px; line-height: 1.7; }
+
+    /* ── Form elements ── */
+    label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      margin-top: 18px;
+    }
+    label:first-child { margin-top: 0; }
+    input[type=text], input[type=url], input[type=date], input[type=password],
+    select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      border-radius: 2px;
+      color: var(--ink);
+      transition: border-color 0.2s ease;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--terra);
+      box-shadow: 0 0 0 2px rgba(184,114,78,0.15);
+    }
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    select { cursor: pointer; }
+
+    /* ── Main layout ── */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--parchment-deep);
+    }
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 300;
+    }
+    .post-count {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── Post list ── */
+    .post-list { display: flex; flex-direction: column; gap: 2px; }
+    .post-row {
+      display: grid;
+      grid-template-columns: 90px 90px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 16px;
+      background: var(--parchment);
+      border: 1px solid transparent;
+      border-radius: 2px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .post-row:hover { border-color: var(--sand); background: #EDE5D8; }
+    .post-date-label {
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .post-cat-badge {
+      display: inline-block;
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--terra-dark);
+      background: rgba(184,114,78,0.12);
+      padding: 3px 8px;
+      border-radius: 1px;
+      white-space: nowrap;
+    }
+    .post-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ink);
+    }
+    .post-row-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* ── Modal / overlay ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(20,14,10,0.55);
+      backdrop-filter: blur(3px);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 32px 16px 32px;
+      overflow-y: auto;
+    }
+    .modal {
+      background: var(--cream);
+      border: 1px solid var(--parchment-deep);
+      border-radius: 3px;
+      width: 100%;
+      max-width: 620px;
+      padding: 36px 40px;
+      position: relative;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      font-size: 22px; color: var(--text-muted); line-height: 1;
+      padding: 4px 8px;
+    }
+    .modal-close:hover { color: var(--ink); }
+    .modal-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 28px; padding-top: 20px;
+      border-top: 1px solid var(--parchment-deep);
+      gap: 12px;
+    }
+    .modal-footer-right { display: flex; gap: 8px; }
+
+    /* ── Form grid ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* ── Toast notification ── */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: var(--ink); color: var(--cream);
+      font-size: 12px; letter-spacing: 0.08em;
+      padding: 12px 24px; border-radius: 2px;
+      z-index: 400; opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+    .toast.error { background: var(--danger); }
+
+    /* ── Status bar ── */
+    .status-bar {
+      background: var(--parchment);
+      border-top: 1px solid var(--parchment-deep);
+      padding: 8px 24px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--sand); flex-shrink: 0;
+    }
+    .status-dot.connected { background: #5E8A5E; }
+    .status-dot.saving    { background: var(--terra); }
+
+    /* ── Token section ── */
+    .token-strip {
+      background: var(--parchment);
+      border: 1px solid var(--parchment-deep);
+      border-radius: 2px;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px;
+    }
+    .token-strip label { margin: 0; white-space: nowrap; flex-shrink: 0; }
+    .token-strip input { margin: 0; flex: 1; }
+    .token-status { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+    .token-status.ok { color: #5E8A5E; }
+
+    /* helper text */
+    .help { font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
+
+    /* ── Variant hint ── */
+    .variant-hint {
+      font-size: 11px; color: var(--text-muted);
+      background: var(--parchment);
+      border: 1px solid var(--parchment-deep);
+      border-radius: 2px; padding: 10px 14px;
+      margin-top: 12px; line-height: 1.6;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="topbar">
+  <div class="topbar-title">
+    The Kept List <span>Admin</span>
+  </div>
+  <div class="topbar-actions">
+    <a href="index.html" class="btn btn-ghost btn-sm" target="_blank">View site ↗</a>
+    <button class="btn btn-primary" id="btn-add-post">+ Add post</button>
+  </div>
+</header>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Status bar -->
+<div class="status-bar">
+  <div class="status-dot" id="status-dot"></div>
+  <span id="status-text">Connecting…</span>
+</div>
+
+<!-- Main -->
+<main class="main" id="app">
+
+  <!-- Token strip -->
+  <div class="token-strip">
+    <label for="gh-token">GitHub token</label>
+    <input type="password" id="gh-token" placeholder="ghp_…" autocomplete="off" spellcheck="false">
+    <span class="token-status" id="token-status"></span>
+    <button class="btn btn-ghost btn-sm" id="btn-save-token">Save</button>
+  </div>
+
+  <!-- Post list -->
+  <div class="section-header">
+    <h2>Posts</h2>
+    <span class="post-count" id="post-count"></span>
+  </div>
+  <div class="post-list" id="post-list">
+    <p style="color:var(--text-muted); padding:16px 0;">Loading posts…</p>
+  </div>
+
+</main>
+
+<!-- Edit / Add modal (hidden by default) -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+    <h2 class="modal-title" id="modal-title">Edit post</h2>
+
+    <form id="post-form" novalidate>
+      <input type="hidden" id="field-id">
+
+      <div class="form-row">
+        <div>
+          <label for="field-date">Date</label>
+          <input type="date" id="field-date" required>
+        </div>
+        <div>
+          <label for="field-category">Category</label>
+          <select id="field-category">
+            <option value="music">Music</option>
+            <option value="travel">Travel</option>
+            <option value="books">Books</option>
+            <option value="products">Object</option>
+            <option value="style">Style</option>
+            <option value="food">Food</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:18px">
+        <div>
+          <label for="field-variant">Card type</label>
+          <select id="field-variant">
+            <option value="text-only">Text only</option>
+            <option value="swatch">Colour swatch + text</option>
+            <option value="image">Photo + text</option>
+            <option value="quote">Pull quote</option>
+          </select>
+        </div>
+        <div>
+          <label for="field-tone">Background tone</label>
+          <select id="field-tone">
+            <option value="default">Default (parchment)</option>
+            <option value="warm">Warm</option>
+            <option value="deep">Deep</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quote fields (shown when variant=quote) -->
+      <div id="quote-fields">
+        <label for="field-quote-text">Quote text</label>
+        <textarea id="field-quote-text" rows="3" placeholder="The quote itself…"></textarea>
+        <label for="field-quote-attr">Attribution</label>
+        <input type="text" id="field-quote-attr" placeholder="Author, Book Title">
+        <label for="field-quote-detail">Link to detail page (item key, optional)</label>
+        <input type="text" id="field-quote-detail" placeholder="rings-saturn">
+      </div>
+
+      <!-- Standard fields (hidden when variant=quote) -->
+      <div id="standard-fields">
+        <div class="form-row" style="margin-top:18px">
+          <div>
+            <label for="field-line1">Title — line 1</label>
+            <input type="text" id="field-line1" placeholder="Main title">
+          </div>
+          <div>
+            <label for="field-line2">Title — line 2 <em style="font-style:italic;font-weight:300">(italic)</em></label>
+            <input type="text" id="field-line2" placeholder="Subtitle or author">
+          </div>
+        </div>
+
+        <div>
+          <label for="field-emphasis">Which line is italic?</label>
+          <select id="field-emphasis" style="width:auto">
+            <option value="2">Line 2 (usual — subtitle/author italic)</option>
+            <option value="1">Line 1 (title is italic, line 2 is plain)</option>
+          </select>
+        </div>
+
+        <label for="field-note">Body text</label>
+        <textarea id="field-note" rows="4" placeholder="Write a few sentences about why this is on the list…"></textarea>
+      </div>
+
+      <!-- Visual fields (shown when variant=swatch or image) -->
+      <div id="visual-fields">
+        <div id="swatch-field">
+          <label for="field-swatch">Colour swatch style</label>
+          <select id="field-swatch">
+            <option value="visual-style-light">Style — light</option>
+            <option value="visual-style-dark">Style — dark</option>
+            <option value="visual-music-2">Music</option>
+            <option value="visual-travel-warm">Travel — warm</option>
+            <option value="visual-travel-blue">Travel — blue</option>
+            <option value="visual-books">Books</option>
+            <option value="visual-products">Products</option>
+            <option value="visual-food">Food / warm amber</option>
+          </select>
+        </div>
+        <div id="image-field">
+          <label for="field-image">Image path or URL</label>
+          <input type="text" id="field-image" placeholder="img/folder/filename.jpg">
+          <p class="help">Upload the image to GitHub first (in the <code>img/</code> folder), then paste the path here. Or paste a full https:// URL.</p>
+        </div>
+        <div class="form-row" style="margin-top:18px">
+          <div>
+            <label for="field-height">Image height (px)</label>
+            <input type="text" id="field-height" placeholder="200">
+          </div>
+          <div>
+            <label for="field-detail">Detail page link (item key)</label>
+            <input type="text" id="field-detail" placeholder="rings-saturn">
+            <p class="help">Fills in detail.html?item=…</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- External link (standard + swatch/image cards) -->
+      <div id="link-fields">
+        <div class="form-row" style="margin-top:4px">
+          <div>
+            <label for="field-link-url">External link URL (optional)</label>
+            <input type="url" id="field-link-url" placeholder="https://…">
+          </div>
+          <div>
+            <label for="field-link-label">Link label</label>
+            <input type="text" id="field-link-label" placeholder="Shop, $74.90 →">
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+    <div class="modal-footer">
+      <button class="btn btn-danger hidden" id="btn-delete">Delete post</button>
+      <div class="modal-footer-right">
+        <button class="btn btn-ghost" style="background:var(--parchment);color:var(--ink);border:1px solid var(--sand)" id="btn-cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-save">Save &amp; publish</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── Config ── */
+  const REPO   = '555damo/thingsIkeep';
+  const BRANCH = 'main';
+  const FILE   = 'posts.json';
+
+  /* ── State ── */
+  let posts = [];
+  let fileSha = null;
+  let editingId = null;
+
+  /* ── DOM refs ── */
+  const postList     = document.getElementById('post-list');
+  const postCount    = document.getElementById('post-count');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalTitle   = document.getElementById('modal-title');
+  const toastEl      = document.getElementById('toast');
+  const statusDot    = document.getElementById('status-dot');
+  const statusText   = document.getElementById('status-text');
+  const tokenInput   = document.getElementById('gh-token');
+  const tokenStatus  = document.getElementById('token-status');
+
+  /* ── Token ── */
+  function getToken() { return localStorage.getItem('admin_gh_token') || ''; }
+  function saveToken(t) { localStorage.setItem('admin_gh_token', t); }
+
+  tokenInput.value = getToken();
+  document.getElementById('btn-save-token').addEventListener('click', () => {
+    saveToken(tokenInput.value.trim());
+    showToast('Token saved');
+    loadPosts();
+  });
+
+  /* ── Toast ── */
+  let toastTimer;
+  function showToast(msg, isError = false) {
+    clearTimeout(toastTimer);
+    toastEl.textContent = msg;
+    toastEl.className   = 'toast' + (isError ? ' error' : '');
+    toastEl.classList.add('show');
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+  }
+
+  /* ── Status bar ── */
+  function setStatus(state, msg) {
+    statusText.textContent = msg;
+    statusDot.className    = 'status-dot ' + (state || '');
+  }
+
+  /* ── GitHub API ── */
+  async function ghFetch(path, opts = {}) {
+    const token = getToken();
+    const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
+      ...opts,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        ...(opts.headers || {}),
+      },
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.message || `HTTP ${res.status}`);
+    }
+    return res.json();
+  }
+
+  /* ── Load posts from GitHub ── */
+  async function loadPosts() {
+    setStatus('saving', 'Loading…');
+    postList.innerHTML = '<p style="color:var(--text-muted);padding:16px 0">Loading…</p>';
+    try {
+      const file = await ghFetch(`contents/${FILE}?ref=${BRANCH}`);
+      fileSha = file.sha;
+      const json = JSON.parse(atob(file.content.replace(/\n/g, '')));
+      posts = json.posts || [];
+      renderList();
+      setStatus('connected', `${posts.length} posts loaded`);
+      tokenStatus.textContent = '✓ Connected';
+      tokenStatus.className   = 'token-status ok';
+    } catch (err) {
+      setStatus('', 'Error loading posts');
+      tokenStatus.textContent = '✗ ' + err.message;
+      tokenStatus.className   = 'token-status';
+      postList.innerHTML = `<p style="color:var(--danger);padding:16px 0">${err.message}. Check your GitHub token and try again.</p>`;
+    }
+  }
+
+  /* ── Save posts to GitHub ── */
+  async function savePosts() {
+    setStatus('saving', 'Saving…');
+    document.getElementById('btn-save').disabled = true;
+    try {
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify({ posts }, null, 2))));
+      const result  = await ghFetch(`contents/${FILE}`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          message: `Update posts.json`,
+          content,
+          sha:     fileSha,
+          branch:  BRANCH,
+        }),
+      });
+      fileSha = result.content.sha;
+      setStatus('connected', 'Saved — site will update in ~1 min');
+      showToast('Published! Site updates in about a minute.');
+    } catch (err) {
+      setStatus('', 'Save failed');
+      showToast('Save failed: ' + err.message, true);
+    } finally {
+      document.getElementById('btn-save').disabled = false;
+    }
+  }
+
+  /* ── Render post list ── */
+  const CAT_LABEL = { style:'Style', music:'Music', travel:'Travel', books:'Books', products:'Object', food:'Food' };
+
+  function formatDateShort(iso) {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'2-digit' });
+  }
+
+  function renderList() {
+    postCount.textContent = posts.length + ' posts';
+    if (!posts.length) {
+      postList.innerHTML = '<p style="color:var(--text-muted);padding:16px 0">No posts yet. Add one above.</p>';
+      return;
+    }
+    postList.innerHTML = posts.map(p => {
+      const title = p.variant === 'quote'
+        ? `"${truncate(p.quoteText, 40)}"`
+        : [p.titleLine1, p.titleLine2].filter(Boolean).join(' · ');
+      return `<div class="post-row">
+        <span class="post-date-label">${p.date ? formatDateShort(p.date) : '—'}</span>
+        <span class="post-cat-badge">${CAT_LABEL[p.category] || p.category}</span>
+        <span class="post-title">${esc(title)}</span>
+        <div class="post-row-actions">
+          <button class="btn btn-ghost btn-sm" style="background:var(--parchment-deep);color:var(--ink);border:1px solid var(--sand)" onclick="openEdit('${p.id}')">Edit</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function truncate(s, n) { if (!s) return ''; return s.length > n ? s.slice(0, n) + '…' : s; }
+  function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  /* ── Slug generator ── */
+  function slugify(s) {
+    return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  /* ── Modal show/hide ── */
+  function showModal() {
+    modalOverlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => modalOverlay.querySelector('input, select, textarea')?.focus(), 50);
+  }
+  function hideModal() {
+    modalOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+    editingId = null;
+  }
+
+  document.getElementById('modal-close').addEventListener('click', hideModal);
+  document.getElementById('btn-cancel').addEventListener('click', hideModal);
+  modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) hideModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') hideModal(); });
+
+  /* ── Variant-dependent field visibility ── */
+  function updateFieldVisibility() {
+    const variant = document.getElementById('field-variant').value;
+    const isQuote    = variant === 'quote';
+    const hasSwatch  = variant === 'swatch';
+    const hasImage   = variant === 'image';
+    const hasVisual  = hasSwatch || hasImage;
+
+    document.getElementById('quote-fields').classList.toggle('hidden', !isQuote);
+    document.getElementById('standard-fields').classList.toggle('hidden', isQuote);
+    document.getElementById('visual-fields').classList.toggle('hidden', !hasVisual);
+    document.getElementById('link-fields').classList.toggle('hidden', isQuote);
+    document.getElementById('swatch-field').classList.toggle('hidden', !hasSwatch);
+    document.getElementById('image-field').classList.toggle('hidden', !hasImage);
+  }
+  document.getElementById('field-variant').addEventListener('change', updateFieldVisibility);
+
+  /* ── Open add modal ── */
+  document.getElementById('btn-add-post').addEventListener('click', () => {
+    editingId = null;
+    modalTitle.textContent = 'Add post';
+    document.getElementById('post-form').reset();
+    document.getElementById('field-id').value  = '';
+    document.getElementById('field-date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('field-height').value = '200';
+    document.getElementById('btn-delete').classList.add('hidden');
+    updateFieldVisibility();
+    showModal();
+  });
+
+  /* ── Open edit modal ── */
+  function openEdit(id) {
+    const post = posts.find(p => p.id === id);
+    if (!post) return;
+    editingId = id;
+    modalTitle.textContent = 'Edit post';
+
+    document.getElementById('field-id').value          = post.id;
+    document.getElementById('field-date').value         = post.date || '';
+    document.getElementById('field-category').value     = post.category || 'style';
+    document.getElementById('field-variant').value      = post.variant  || 'text-only';
+    document.getElementById('field-tone').value         = post.tone     || 'default';
+    document.getElementById('field-line1').value        = post.titleLine1 || '';
+    document.getElementById('field-line2').value        = post.titleLine2 || '';
+    document.getElementById('field-emphasis').value     = String(post.emphasisLine || 2);
+    document.getElementById('field-note').value         = post.note     || '';
+    document.getElementById('field-detail').value       = post.detailItem || '';
+    document.getElementById('field-link-url').value     = post.linkUrl  || '';
+    document.getElementById('field-link-label').value   = post.linkLabel || '';
+    document.getElementById('field-quote-text').value   = post.quoteText || '';
+    document.getElementById('field-quote-attr').value   = post.quoteAttr || '';
+    document.getElementById('field-quote-detail').value = post.quoteDetailItem || '';
+
+    /* Visual */
+    if (post.variant === 'swatch') {
+      document.getElementById('field-swatch').value = post.visual || 'visual-style-light';
+    } else if (post.variant === 'image') {
+      document.getElementById('field-image').value = post.visual || '';
+    }
+    document.getElementById('field-height').value = post.visualHeight || 200;
+
+    document.getElementById('btn-delete').classList.remove('hidden');
+    updateFieldVisibility();
+    showModal();
+  }
+
+  /* ── Read form → post object ── */
+  function readForm() {
+    const variant  = document.getElementById('field-variant').value;
+    const isQuote  = variant === 'quote';
+    const hasSwatch = variant === 'swatch';
+    const hasImage  = variant === 'image';
+
+    let visual = null;
+    if (hasSwatch) visual = document.getElementById('field-swatch').value;
+    if (hasImage)  visual = document.getElementById('field-image').value.trim();
+
+    const rawId   = document.getElementById('field-id').value.trim();
+    const line1   = document.getElementById('field-line1').value.trim();
+    const id      = rawId || slugify(line1) || slugify(document.getElementById('field-quote-text').value) || ('post-' + Date.now());
+
+    return {
+      id,
+      date:           document.getElementById('field-date').value,
+      category:       document.getElementById('field-category').value,
+      variant,
+      tone:           document.getElementById('field-tone').value,
+      titleLine1:     isQuote ? null : (line1 || null),
+      titleLine2:     isQuote ? null : (document.getElementById('field-line2').value.trim() || null),
+      emphasisLine:   isQuote ? 2    : Number(document.getElementById('field-emphasis').value),
+      note:           isQuote ? null : (document.getElementById('field-note').value.trim() || null),
+      visual:         (hasSwatch || hasImage) ? visual : null,
+      visualHeight:   (hasSwatch || hasImage) ? (Number(document.getElementById('field-height').value) || 200) : null,
+      detailItem:     isQuote ? null : (document.getElementById('field-detail').value.trim() || null),
+      linkUrl:        isQuote ? null : (document.getElementById('field-link-url').value.trim() || null),
+      linkLabel:      isQuote ? null : (document.getElementById('field-link-label').value.trim() || null),
+      quoteText:      isQuote ? (document.getElementById('field-quote-text').value.trim() || null) : null,
+      quoteAttr:      isQuote ? (document.getElementById('field-quote-attr').value.trim() || null) : null,
+      quoteDetailItem:isQuote ? (document.getElementById('field-quote-detail').value.trim() || null) : null,
+    };
+  }
+
+  /* ── Save button ── */
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const post = readForm();
+    if (editingId) {
+      const idx = posts.findIndex(p => p.id === editingId);
+      if (idx !== -1) posts[idx] = post; else posts.unshift(post);
+    } else {
+      posts.unshift(post); // newest first
+    }
+    hideModal();
+    renderList();
+    await savePosts();
+  });
+
+  /* ── Delete button ── */
+  document.getElementById('btn-delete').addEventListener('click', async () => {
+    if (!editingId) return;
+    const post = posts.find(p => p.id === editingId);
+    const name = post ? (post.titleLine1 || 'this post') : 'this post';
+    if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    posts = posts.filter(p => p.id !== editingId);
+    hideModal();
+    renderList();
+    await savePosts();
+  });
+
+  /* ── Init ── */
+  if (getToken()) {
+    loadPosts();
+  } else {
+    setStatus('', 'Enter your GitHub token to begin');
+    postList.innerHTML = '<p style="color:var(--text-muted);padding:16px 0">Enter your GitHub token above and click Save to connect.</p>';
+  }
+</script>
+
+</body>
+</html>
