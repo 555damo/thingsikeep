@@ -638,30 +638,13 @@
       margin-bottom: 48px;
     }
 
-    /* Animated shader background — canvas injected via JS */
-    #hero-shader-mount {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
     .index-hero-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
-      background:
-        /* Vinyl record rings — positioned right of centre */
-        radial-gradient(circle at 76% 50%, transparent 18%,   rgba(200,132,80,0.42) 18.6%, transparent 19.4%),
-        radial-gradient(circle at 76% 50%, transparent 27%,   rgba(200,132,80,0.28) 27.6%, transparent 28.4%),
-        radial-gradient(circle at 76% 50%, transparent 36%,   rgba(200,132,80,0.18) 36.6%, transparent 37.4%),
-        radial-gradient(circle at 76% 50%, transparent 45%,   rgba(200,132,80,0.10) 45.6%, transparent 46.4%),
-        radial-gradient(circle at 76% 50%, transparent 54%,   rgba(200,132,80,0.06) 54.6%, transparent 55.4%),
-        radial-gradient(circle  7px  at 76% 50%, rgba(212,160,90,0.70) 100%, transparent 100%),
-        /* Warm atmosphere — upper left bloom */
-        radial-gradient(ellipse 48% 50% at 28% 36%, rgba(180,120,50,0.18) 0%, transparent 70%),
-        /* Base gradient — warm dark brown rather than near-black */
-        linear-gradient(160deg, #2A1C10 0%, #3D2616 35%, #2E1C0C 70%, #201408 100%);
+      background-image: url('img/0225/record.jpg');
+      background-size: cover;
+      background-position: center;
     }
 
     .index-hero-scrim {
@@ -936,7 +919,6 @@
   <!-- ── FEATURED HERO ── -->
   <section class="index-hero" aria-labelledby="featured-title">
     <div class="index-hero-bg"   aria-hidden="true" role="presentation"></div>
-    <div id="hero-shader-mount"  aria-hidden="true" role="presentation"></div>
     <div class="index-hero-scrim" aria-hidden="true" role="presentation"></div>
     <p class="index-hero-label"   aria-hidden="true">No. 001 &mdash; Music</p>
     <div class="index-hero-inner">
@@ -964,34 +946,6 @@
   <footer class="site-footer">
     <p class="footer-text">Updated as things are found, kept, or remembered.</p>
   </footer>
-
-  <!-- Animated mesh-gradient background for the hero section.
-       Loaded as an ES module via esm.sh — no build step needed.
-       Falls back gracefully to the static .index-hero-bg if JS is disabled. -->
-  <script type="module">
-    const prefersReducedMotion =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const [{ createElement }, { createRoot }, { MeshGradient }] = await Promise.all([
-      import('https://esm.sh/react@18'),
-      import('https://esm.sh/react-dom@18/client'),
-      import('https://esm.sh/@paper-design/shaders-react?deps=react@18,react-dom@18'),
-    ]);
-
-    const mount = document.getElementById('hero-shader-mount');
-    if (mount) {
-      const root = createRoot(mount);
-      root.render(
-        createElement(MeshGradient, {
-          style: { position: 'absolute', inset: 0, width: '100%', height: '100%' },
-          // Warm cognac palette — dark parchment brown → mahogany → terracotta → amber sand
-          colors: ['#2A1C10', '#4A2C18', '#7A4222', '#C8844A', '#D4A870'],
-          speed: prefersReducedMotion ? 0 : 0.18,
-          backgroundColor: '#2A1C10',
-        })
-      );
-    }
-  </script>
 
   <script>
     /* ── Helpers ── */
